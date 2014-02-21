@@ -1,3 +1,6 @@
+/**
+@author Chaz Kerby
+*/
 package com.chazwarp.miscadditions.config;
 
 import java.io.File;

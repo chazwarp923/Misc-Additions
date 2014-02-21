@@ -1,3 +1,6 @@
+/**
+@author Chaz Kerby
+*/
 package com.chazwarp.miscadditions.network;
 
 import net.minecraft.network.INetworkManager;

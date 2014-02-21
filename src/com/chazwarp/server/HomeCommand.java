@@ -1,3 +1,6 @@
+/**
+@author Chaz Kerby
+*/
 package com.chazwarp.server;
 
 import java.io.BufferedReader;
@@ -35,7 +38,7 @@ public class HomeCommand implements ICommand
   @Override
   public String getCommandUsage(ICommandSender icommandsender)
   {
-    return "sample <text>";
+    return "/Home <Home Name>";
   }
 
   @Override
@@ -75,8 +78,7 @@ public class HomeCommand implements ICommand
   }
 
   @Override
-  public List addTabCompletionOptions(ICommandSender icommandsender,
-      String[] astring)
+  public List addTabCompletionOptions(ICommandSender icommandsender, String[] astring)
   {
     return null;
   }
@@ -98,7 +100,7 @@ public class HomeCommand implements ICommand
   
   public final String getSaveFilePath() {
 		File save = DimensionManager.getCurrentSaveRootDirectory();
-		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\";
+		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
   }
   
   EntityPlayer player;

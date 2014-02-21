@@ -1,3 +1,6 @@
+/**
+@author Chaz Kerby
+*/
 package com.chazwarp.server;
 
 import java.io.File;
@@ -21,6 +24,7 @@ public class SetHomeCommand implements ICommand
   public double PLAYER_Y;
   public double PLAYER_Z;
   public int PLAYER_DIM;
+  
   public SetHomeCommand()
   {
     this.aliases = new ArrayList();
@@ -48,10 +52,10 @@ public class SetHomeCommand implements ICommand
   @Override
   public void processCommand(ICommandSender icommandsender, String[] astring)
   {
-	EntityPlayer player;
       
     if(icommandsender instanceof EntityPlayer){
             player = (EntityPlayer)icommandsender;
+            PLAYER = icommandsender.getCommandSenderName();
     }
     else {
     	ChatMessageComponent chat = new ChatMessageComponent();
@@ -60,7 +64,6 @@ public class SetHomeCommand implements ICommand
         return;
     }
     
-    PLAYER = player.getEntityName();
     PLAYER_X = player.posX;
     PLAYER_Y = player.posY;
     PLAYER_Z = player.posZ;
@@ -107,13 +110,13 @@ public class SetHomeCommand implements ICommand
   
   public final String getSaveFilePath() {
 		File save = DimensionManager.getCurrentSaveRootDirectory();
-		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\";
+		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
   }
   
   EntityPlayer player;
   public final String saveFileName = PLAYER;
   public final String getSaveFileName() {
-	  return saveFileName + "_Home" + ".txt";
+	  return saveFileName + ".txt";
   }
   
   public final String getFullSavePath() {
@@ -132,10 +135,13 @@ public class SetHomeCommand implements ICommand
 		file.createNewFile();
 		PrintWriter printWriter = new PrintWriter(file);
 			
-			printWriter.append(PLAYER_X + "; ");
-			printWriter.append(PLAYER_Y + "; ");
-			printWriter.append(PLAYER_Z + "; ");
-			printWriter.append(PLAYER_DIM + "; ");
+			printWriter.append(PLAYER_X + "");
+			printWriter.println();
+			printWriter.append(PLAYER_Y + "");
+			printWriter.println();
+			printWriter.append(PLAYER_Z + "");
+			printWriter.println();
+			printWriter.append(PLAYER_DIM + "");
 			printWriter.close();
 		}
   

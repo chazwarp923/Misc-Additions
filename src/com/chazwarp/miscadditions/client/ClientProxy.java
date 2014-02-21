@@ -1,3 +1,6 @@
+/**
+@author Chaz Kerby
+*/
 package com.chazwarp.miscadditions.client;
 
 import com.chazwarp.miscadditions.CommonProxy;

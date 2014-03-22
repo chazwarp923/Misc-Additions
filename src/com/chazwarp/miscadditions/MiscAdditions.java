@@ -6,8 +6,8 @@ package com.chazwarp.miscadditions;
 import com.chazwarp.miscadditions.config.ConfigHandler;
 import com.chazwarp.miscadditions.lib.Reference;
 import com.chazwarp.miscadditions.network.PacketHandler;
-import com.chazwarp.server.HomeCommand;
-import com.chazwarp.server.SetHomeCommand;
+import com.chazwarp.miscadditions.server.HomeCommand;
+import com.chazwarp.miscadditions.server.SetHomeCommand;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -34,10 +34,19 @@ public class MiscAdditions {
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
         	
-        	ConfigHandler.init(event.getSuggestedConfigurationFile());
+        	//Makes a Config
+        		ConfigHandler.init(event.getSuggestedConfigurationFile());
         	
         	//Registers Things With The Proxy
-        	proxy.registerRenderers();
+        		proxy.registerRenderers();
+        	
+        	//Hard Codes The Mod Data
+	        	event.getModMetadata().credits = "";
+	        	event.getModMetadata().description = "A Collection of Random Things That Don't Need Their Own Mods";
+	        	event.getModMetadata().logoFile = "assets/" + Reference.MOD_ID +"/textures/logo.png";
+	        	event.getModMetadata().modId = Reference.MOD_ID;
+	        	event.getModMetadata().name = Reference.MOD_NAME;
+	        	event.getModMetadata().version = Reference.VERSION;
         }
         
         @EventHandler
@@ -53,7 +62,8 @@ public class MiscAdditions {
         @EventHandler
         public void serverLoad(FMLServerStartingEvent event)
         {
-          event.registerServerCommand(new SetHomeCommand());
-          event.registerServerCommand(new HomeCommand());
+        	//Registers Comands
+		        event.registerServerCommand(new SetHomeCommand());
+		        event.registerServerCommand(new HomeCommand());
         }
 }

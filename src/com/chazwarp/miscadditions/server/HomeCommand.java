@@ -1,7 +1,7 @@
 /**
 @author Chaz Kerby
 */
-package com.chazwarp.server;
+package com.chazwarp.miscadditions.server;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,16 +10,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import net.minecraft.command.CommandServerTp;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class HomeCommand implements ICommand
+public class HomeCommand implements ICommand, ICommandSender
 {
   private List aliases;
   public String PLAYER;
@@ -32,13 +32,13 @@ public class HomeCommand implements ICommand
   @Override
   public String getCommandName()
   {
-    return "home";
+    return "Home";
   }
 
   @Override
   public String getCommandUsage(ICommandSender icommandsender)
   {
-    return "/Home <Home Name>";
+    return "/Home {Home Name}";
   }
 
   @Override
@@ -61,14 +61,23 @@ public class HomeCommand implements ICommand
         MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chat);
         return;
     }
-   
+    //player.posY = 100;
+    player.motionY = 10;
     PLAYER = player.getEntityName();
     read();
     ChatMessageComponent chat = new ChatMessageComponent();
     chat.addText("");
-    MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chat);
-    return;
-   
+    
+    MinecraftServer minecraftserver = MinecraftServer.getServer();
+
+    /*if (minecraftserver != null)
+    {
+        ICommandManager icommandmanager = minecraftserver.getCommandManager();
+        icommandmanager.executeCommand(icommandsender, "tp" + icommandsender.getCommandSenderName());
+        //Needs to be finished, needs way to get the coordinates to teleport to
+    }
+   */
+    
   }
 
   @Override
@@ -93,6 +102,42 @@ public class HomeCommand implements ICommand
   public int compareTo(Object o)
   {
     return 0;
+  }
+  
+  //Begin ICommand Sender Methods
+  @Override
+  public String getCommandSenderName() {
+  	return "Home Command";
+  }
+
+  @Override
+  public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) {
+  	
+  }
+
+  @Override
+  public boolean canCommandSenderUseCommand(int i, String s) {
+  	return true;
+  }
+
+  @Override
+  public ChunkCoordinates getPlayerCoordinates() {
+	  if(player != null) {
+		  return player.playerLocation;
+	  }
+	  else {
+		  return null; 
+	  }
+  }
+
+  @Override
+  public World getEntityWorld() {
+	  if(player != null) {
+		  return player.getEntityWorld(); 
+	  }
+	  else {
+		  return null;
+	  }
   }
   
  //From here down is all code originally written by Reika and borrowed from DragonAPI

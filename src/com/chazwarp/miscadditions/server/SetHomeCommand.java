@@ -1,10 +1,9 @@
 /**
 @author Chaz Kerby
 */
-package com.chazwarp.server;
+package com.chazwarp.miscadditions.server;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,7 @@ public class SetHomeCommand implements ICommand
   @Override
   public String getCommandUsage(ICommandSender icommandsender)
   {
-    return "/sethome [Home Name]";
+    return "/sethome {Home Name}";
   }
 
   @Override

@@ -4,6 +4,8 @@
 package com.chazwarp.miscadditions;
 
 import com.chazwarp.miscadditions.config.ConfigHandler;
+import com.chazwarp.miscadditions.crafting.Shaped;
+import com.chazwarp.miscadditions.items.Items;
 import com.chazwarp.miscadditions.lib.Reference;
 import com.chazwarp.miscadditions.network.PacketHandler;
 import com.chazwarp.miscadditions.server.HomeCommand;
@@ -37,6 +39,9 @@ public class MiscAdditions {
         	//Makes a Config
         		ConfigHandler.init(event.getSuggestedConfigurationFile());
         	
+        	//Adds Crafting
+        		Shaped.addCrafting();
+        		
         	//Registers Things With The Proxy
         		proxy.registerRenderers();
         	
@@ -51,7 +56,8 @@ public class MiscAdditions {
         
         @EventHandler
         public void Init(FMLInitializationEvent event) {
-        	
+        	Items.initAxe();
+        	Items.addAxeName();
         }
         
         @EventHandler

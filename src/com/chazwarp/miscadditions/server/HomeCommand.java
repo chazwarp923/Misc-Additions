@@ -32,7 +32,7 @@ public class HomeCommand implements ICommand, ICommandSender
   @Override
   public String getCommandName()
   {
-    return "Home";
+    return "home";
   }
 
   @Override

@@ -7,6 +7,8 @@ import java.io.File;
 
 import net.minecraftforge.common.Configuration;
 
+import com.chazwarp.miscadditions.lib.ItemInfo;
+
 public class ConfigHandler {
 
 	
@@ -15,6 +17,7 @@ public class ConfigHandler {
 		
 		config.load();
 		
+		ItemInfo.LUMBER_AXE_ID = config.getItem(ItemInfo.LUMBER_AXE_KEY, ItemInfo.LUMBER_AXE_DEFAULT).getInt() - 256;
 		
 		
 		config.save();

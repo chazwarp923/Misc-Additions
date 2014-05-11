@@ -18,11 +18,14 @@ import net.minecraftforge.common.DimensionManager;
 public class SetHomeCommand implements ICommand
 {
   private List aliases;
-  public String PLAYER;
-  public double PLAYER_X;
-  public double PLAYER_Y;
-  public double PLAYER_Z;
-  public int PLAYER_DIM;
+  EntityPlayer player;
+  private String PLAYER;
+  private String HOME_NAME;
+  private double PLAYER_X;
+  private double PLAYER_Y;
+  private double PLAYER_Z;
+  private int PLAYER_DIM;
+  private boolean correctSyntax = true;
   
   public SetHomeCommand()
   {
@@ -39,7 +42,7 @@ public class SetHomeCommand implements ICommand
   @Override
   public String getCommandUsage(ICommandSender icommandsender)
   {
-    return "/sethome {Home Name}";
+    return "/sethome [Home Name]";
   }
 
   @Override
@@ -49,34 +52,47 @@ public class SetHomeCommand implements ICommand
   }
 
   @Override
-  public void processCommand(ICommandSender icommandsender, String[] astring)
-  {
-      
-    if(icommandsender instanceof EntityPlayer){
-            player = (EntityPlayer)icommandsender;
-            PLAYER = icommandsender.getCommandSenderName();
-    }
-    else {
-    	ChatMessageComponent chat = new ChatMessageComponent();
-        chat.addText("Player Only Command");
-        MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chat);
-        return;
-    }
-    
-    PLAYER_X = player.posX;
-    PLAYER_Y = player.posY;
-    PLAYER_Z = player.posZ;
-    PLAYER_DIM = player.dimension;
-   
-    ChatMessageComponent chat = new ChatMessageComponent();
-    chat.addText("Home Set");
-    player.sendChatToPlayer(chat);
-    try {
-		save();
-	} catch (Throwable e) {
-		e.printStackTrace();
+  public void processCommand(ICommandSender icommandsender, String[] stringArray)
+  { 
+	
+	//if(stringArray.length == 0) {
+	//	correctSyntax = false;
+	//}
+	
+	if(icommandsender instanceof EntityPlayer) {
+        player = (EntityPlayer)icommandsender;
+        
+	    if(correctSyntax == true){
+            PLAYER = icommandsender.getCommandSenderName(); 
+            PLAYER_X = player.posX;
+            PLAYER_Y = player.posY;
+            PLAYER_Z = player.posZ;
+            PLAYER_DIM = player.dimension;	
+            HOME_NAME = stringArray[0];
+            
+           
+            ChatMessageComponent chat = new ChatMessageComponent();
+            chat.addText("Home Set");
+            player.sendChatToPlayer(chat);
+            
+            try {
+        		save();
+        	} 
+            catch (Throwable e) {
+        		e.printStackTrace();
+        	}  
+	    }
+		else if(correctSyntax == false) {
+			ChatMessageComponent chat = new ChatMessageComponent();
+	    	chat.addText("Incorrect Syntax, You Need A Name For The Home");
+	    	player.sendChatToPlayer(chat);
+		}
 	}
-   
+	else if(!(icommandsender instanceof EntityPlayer)) {
+	     ChatMessageComponent chat = new ChatMessageComponent();
+	     chat.addText("Player Only Command");
+	     MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chat);
+	}
   }
 
   @Override
@@ -86,9 +102,7 @@ public class SetHomeCommand implements ICommand
   }
 
   @Override
-  public List addTabCompletionOptions(ICommandSender icommandsender,
-      String[] astring)
-  {
+  public List addTabCompletionOptions(ICommandSender icommandsender, String[] astring) {
     return null;
   }
 
@@ -112,10 +126,8 @@ public class SetHomeCommand implements ICommand
 		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
   }
   
-  EntityPlayer player;
-  public final String saveFileName = PLAYER;
   public final String getSaveFileName() {
-	  return saveFileName + ".txt";
+	  return HOME_NAME + ".txt";
   }
   
   public final String getFullSavePath() {
@@ -123,14 +135,14 @@ public class SetHomeCommand implements ICommand
   }
   
   private final void save() throws Throwable {
-	  String name = this.getSaveFileName();
-		File dir = new File(this.getSaveFilePath());
+	  File dir = new File(this.getSaveFilePath());
 	  if (!dir.exists()) {
 			dir.mkdirs();
 		}
 	  File file = new File(this.getFullSavePath());
-		if (file.exists())
+		if (file.exists()) {
 			file.delete();
+		}
 		file.createNewFile();
 		PrintWriter printWriter = new PrintWriter(file);
 			
@@ -143,6 +155,4 @@ public class SetHomeCommand implements ICommand
 			printWriter.append(PLAYER_DIM + "");
 			printWriter.close();
 		}
-  
   }
-  

@@ -39,6 +39,10 @@ public class MiscAdditions {
         	//Makes a Config
         		ConfigHandler.init(event.getSuggestedConfigurationFile());
         	
+        	//Adds Items
+            	Items.initAxe();
+            	Items.addAxeName();
+        		
         	//Adds Crafting
         		Shaped.addCrafting();
         		
@@ -56,8 +60,7 @@ public class MiscAdditions {
         
         @EventHandler
         public void Init(FMLInitializationEvent event) {
-        	Items.initAxe();
-        	Items.addAxeName();
+
         }
         
         @EventHandler

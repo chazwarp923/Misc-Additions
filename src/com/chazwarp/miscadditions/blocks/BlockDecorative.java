@@ -37,9 +37,9 @@ public class BlockDecorative extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister register) {
-		topIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + Textures.INVENTORY_CHEST_TOP);
-		sideIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + Textures.INVENTORY_CHEST_FRONT);
-		botIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + Textures.INVENTORY_CHEST_TOP);
+		//topIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + Textures.INVENTORY_CHEST_TOP);
+		//sideIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + Textures.INVENTORY_CHEST_FRONT);
+		//botIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + Textures.INVENTORY_CHEST_TOP);
 	}
     
     @SideOnly(Side.CLIENT)

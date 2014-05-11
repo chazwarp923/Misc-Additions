@@ -13,7 +13,7 @@ public class Items {
 	public static Item axeLumber;
 	
 		public static void initAxe() {
-			axeLumber = new ItemLumberAxe(ItemInfo.LUMBER_AXE_ID, EnumToolMaterial.IRON);
+			axeLumber = new ItemLumberAxe(ItemInfo.LUMBER_AXE_ID);
 			GameRegistry.registerItem(axeLumber, ItemInfo.LUMBER_AXE_KEY);
 		}
 

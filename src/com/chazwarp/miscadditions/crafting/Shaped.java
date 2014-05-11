@@ -15,11 +15,8 @@ public class Shaped {
 
 	public static void addCrafting() {
 		
-		ItemStack blockIron = new ItemStack(Block.blockIron);
-		ItemStack ingotIron = new ItemStack(Item.ingotIron);
-		ItemStack stick = new ItemStack(Item.stick);
 		ItemStack lumberAxe = new ItemStack(Items.axeLumber);
 		
-		GameRegistry.addShapedRecipe(lumberAxe, "BI", "IS", " S", 'B', Block.blockIron, 'I', Item.ingotIron, 'S', Item.stick);
+		GameRegistry.addShapedRecipe(lumberAxe, new Object[] {"BI", "IS", " S", 'B', Block.blockIron, 'I', Item.ingotIron, 'S', Item.stick});
 	}
 }

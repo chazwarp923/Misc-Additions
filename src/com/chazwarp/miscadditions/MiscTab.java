@@ -3,10 +3,10 @@
 */
 package com.chazwarp.miscadditions;
 
-import com.chazwarp.miscadditions.items.Items;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+
+import com.chazwarp.miscadditions.items.Items;
 
 public class MiscTab extends CreativeTabs
 {

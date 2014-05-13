@@ -7,11 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import net.minecraft.world.World;
 
 import com.chazwarp.miscadditions.MiscTab;
 import com.chazwarp.miscadditions.lib.BlockInfo;
-import com.chazwarp.miscadditions.lib.Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

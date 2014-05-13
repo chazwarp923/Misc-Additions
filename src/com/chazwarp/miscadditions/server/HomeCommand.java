@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -19,7 +18,6 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.common.Loader;
 
 public class HomeCommand implements ICommand, ICommandSender
 {
@@ -57,7 +55,6 @@ public class HomeCommand implements ICommand, ICommandSender
   @Override
   public void processCommand(ICommandSender icommandsender, String[] stringArray)
   {
-
 		//if(stringArray.length == 0) {
 		//	correctSyntax = false;
 		//}
@@ -105,6 +102,10 @@ public class HomeCommand implements ICommand, ICommandSender
   @Override
   public List addTabCompletionOptions(ICommandSender icommandsender, String[] astring)
   {
+	  String[] options;
+	  PLAYER = icommandsender.getCommandSenderName();
+	  
+	  listFilesForFolder(new File(getFullSavePath()));
     return null;
   }
 
@@ -155,6 +156,17 @@ public class HomeCommand implements ICommand, ICommandSender
 		  return null;
 	  }
   }
+  
+  public String[] listFilesForFolder(final File folder) {
+	    for (final File fileEntry : folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            listFilesForFolder(fileEntry);
+	        } else {
+	            System.out.println(fileEntry.getName());
+	        }
+	    }
+		return null;
+	}
   
  //From here down is all code originally written by Reika and borrowed from DragonAPI
  // https://github.com/ReikaKalseki/DragonAPI

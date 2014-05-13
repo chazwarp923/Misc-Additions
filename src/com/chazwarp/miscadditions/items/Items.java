@@ -1,6 +1,5 @@
 package com.chazwarp.miscadditions.items;
 
-import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 
 import com.chazwarp.miscadditions.lib.ItemInfo;

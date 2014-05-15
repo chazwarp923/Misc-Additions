@@ -35,11 +35,13 @@ public class ItemLumberAxe extends ItemAxe{
 
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World world, int id, int x, int y, int z, EntityLivingBase ELB) {
-		for(int i=0; i < 16; i++) {
-			if(world.blockExists(x, y + i, z)) {
-				if(Block.blocksList[id].blockMaterial == Material.wood) {
-					if(world.getBlockId(x, y + i, z) == id)
-						world.destroyBlock(x, y + i, z, true);
+		if(ELB.isSneaking() == false) {
+			for(int i=1; i < 16; i++) {
+				if(world.blockExists(x, y + i, z)) {
+					if(Block.blocksList[id].blockMaterial == Material.wood) {
+						if(world.getBlockId(x, y + i, z) == id)
+							world.destroyBlock(x, y + i, z, true);
+					}
 				}
 			}
 		}

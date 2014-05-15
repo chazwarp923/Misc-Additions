@@ -1,0 +1,21 @@
+[
+{
+  "modid": "MiscAdd",
+  "name": "Miscellaneous Additions",
+  "description": "",
+  "version": "",
+  "mcversion": "",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "chazwarp923"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

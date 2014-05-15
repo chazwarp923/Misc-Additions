@@ -45,7 +45,7 @@ public class ItemLumberAxe extends ItemAxe{
 				}
 			}
 		}
-		stack.damageItem(1, ELB);
+		
 		return true;
 	}
 	

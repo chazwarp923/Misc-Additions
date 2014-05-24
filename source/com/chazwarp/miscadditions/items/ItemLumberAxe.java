@@ -45,7 +45,7 @@ public class ItemLumberAxe extends ItemAxe{
 				}
 			}
 		}
-		
+		stack.attemptDamageItem(1, ELB.worldObj.rand);
 		return true;
 	}
 	

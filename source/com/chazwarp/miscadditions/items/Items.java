@@ -18,5 +18,15 @@ public class Items {
 
 		public static void addAxeName() {
 			LanguageRegistry.addName(axeLumber, ItemInfo.LUMBER_AXE_NAME);	
-		}	
+		}
+		
+	
+	public static void initItems() {
+		initAxe();
+	}
+	
+	public static void addNames() {
+		addAxeName();
+
+	}
 }

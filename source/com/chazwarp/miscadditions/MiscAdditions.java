@@ -3,6 +3,7 @@
 */
 package com.chazwarp.miscadditions;
 
+import com.chazwarp.miscadditions.blocks.Blocks;
 import com.chazwarp.miscadditions.config.ConfigHandler;
 import com.chazwarp.miscadditions.crafting.Shaped;
 import com.chazwarp.miscadditions.items.Items;
@@ -39,9 +40,14 @@ public class MiscAdditions {
         	//Makes a Config
         		ConfigHandler.init(event.getSuggestedConfigurationFile());
         	
+        	//Adds Blocks
+        		Blocks.initBlocks();
+        		Blocks.addNames();
+        		Blocks.registerTileEntities();
+        		
         	//Adds Items
-            	Items.initAxe();
-            	Items.addAxeName();
+            	Items.initItems();
+            	Items.addNames();
         		
         	//Adds Crafting
         		Shaped.addCrafting();

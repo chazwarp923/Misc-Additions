@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies="required-after:ThermalExpansion")
 @NetworkMod(channels = {Reference.CHANNEL}  ,clientSideRequired = false, serverSideRequired = true, packetHandler = PacketHandler.class)
 public class MiscAdditions {
 
@@ -49,9 +49,6 @@ public class MiscAdditions {
             	Items.initItems();
             	Items.addNames();
         		
-        	//Adds Crafting
-        		Shaped.addCrafting();
-        		
         	//Registers Things With The Proxy
         		proxy.registerRenderers();
         	
@@ -67,6 +64,9 @@ public class MiscAdditions {
         @EventHandler
         public void Init(FMLInitializationEvent event) {
 
+        	//Adds Crafting
+    		Shaped.addCrafting();	
+        
         }
         
         @EventHandler

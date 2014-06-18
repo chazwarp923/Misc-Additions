@@ -28,7 +28,7 @@ public class BlockWallBase extends BlockWall {
 		Icon texture = Block.wood.getBlockTextureFromSide(side);
 		if(meta == 0 && side == 1) texture = Block.wood.getBlockTextureFromSide(2);
 		if(meta == 1) texture = Blocks.mossyLog.getBlockTextureFromSide(side);
-				
+		
 		return texture;
 	}
 

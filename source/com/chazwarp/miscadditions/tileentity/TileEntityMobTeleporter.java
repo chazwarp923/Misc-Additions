@@ -12,9 +12,11 @@ import cofh.api.energy.TileEnergyHandler;
 public class TileEntityMobTeleporter extends TileEnergyHandler {
 	
 	protected EnergyStorage storage = new EnergyStorage(400000);
+
 	int teleX;
 	int teleY;
 	int teleZ;
+	int teleDist;
 	
 	public TileEntityMobTeleporter() {
 		
@@ -40,7 +42,7 @@ public class TileEntityMobTeleporter extends TileEnergyHandler {
 
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		return 0;
+		return storage.extractEnergy(maxExtract, simulate);
 	}
 
 	@Override
@@ -59,6 +61,8 @@ public class TileEntityMobTeleporter extends TileEnergyHandler {
 	}
 	
 	public void teleportEntity(double x, double y, double z, Entity entity) {
-		entity.setPosition(x, y+2, z);
+		teleDist = (int) entity.getDistanceSq(x, y, z);
+		entity.setPosition(teleX, teleY+10, teleZ);
+		this.extractEnergy(ForgeDirection.UP, teleDist * 10, false);
 	}
 }

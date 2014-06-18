@@ -30,7 +30,7 @@ public class ItemLumberAxe extends ItemAxe{
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister) {
 
-    	this.itemIcon = iconRegister.registerIcon(Reference.MOD_ID.toLowerCase() + ":" + ItemInfo.LUMBER_AXE_UNLOCALIZED_NAME);
+    	this.itemIcon = iconRegister.registerIcon(Reference.TEXTURE_LOC + ":" + ItemInfo.LUMBER_AXE_UNLOCALIZED_NAME);
     }
 
 	@Override
@@ -45,7 +45,8 @@ public class ItemLumberAxe extends ItemAxe{
 				}
 			}
 		}
-		stack.attemptDamageItem(1, ELB.worldObj.rand);
+		stack.damageItem(1, ELB);
+		
 		return true;
 	}
 	

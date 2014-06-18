@@ -37,12 +37,12 @@ public class BlockMobTeleporter extends BlockContainer {
 	}
 	
     @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+    public void onEntityWalking(World world, int x, int y, int z, Entity entity)
     {
     	TileEntity te;
         if (!world.isRemote)
         {
-        	te = world.getBlockTileEntity(x, y, z);
+        	te = world.getBlockTileEntity(x, y-1, z);
         	if(te instanceof TileEntityMobTeleporter) {        		
         		((TileEntityMobTeleporter) te).teleportEntity(x+0.5, y, z+0.5, entity);
         	}

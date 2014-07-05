@@ -56,7 +56,7 @@ public class Blocks {
 	public static Block wallBase;
 	
 		public static void initWallBase() {
-			wallBase = new BlockWallBase(BlockInfo.WALL_ID, Block.wood);
+			wallBase = new BlockMiscWall(BlockInfo.WALL_ID, Block.wood);
 			GameRegistry.registerBlock(wallBase, ItemWall.class, BlockInfo.WALL_KEY);
 		}
 		

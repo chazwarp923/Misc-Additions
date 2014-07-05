@@ -35,6 +35,6 @@ public class MiscTab extends CreativeTabs
     	}
     @Override
     public ItemStack getIconItemStack() {
-    	return new ItemStack(Items.axeLumber, 1, 0);
+    	return new ItemStack(Items.axeLumberDiamond, 1, 0);
     }
 }

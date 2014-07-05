@@ -24,6 +24,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies="required-after:ThermalExpansion")
 @NetworkMod(channels = {Reference.CHANNEL}  ,clientSideRequired = false, serverSideRequired = true, packetHandler = PacketHandler.class)
+
 public class MiscAdditions {
 
 		// The instance of your mod that Forge uses.
@@ -40,14 +41,9 @@ public class MiscAdditions {
         	//Makes a Config
         		ConfigHandler.init(event.getSuggestedConfigurationFile());
         	
-        	//Adds Blocks
+        	//Adds Blocks And Items
         		Blocks.initBlocks();
-        		Blocks.addNames();
-        		Blocks.registerTileEntities();
-        		
-        	//Adds Items
             	Items.initItems();
-            	Items.addNames();
         		
         	//Registers Things With The Proxy
         		proxy.registerRenderers();
@@ -64,8 +60,15 @@ public class MiscAdditions {
         @EventHandler
         public void Init(FMLInitializationEvent event) {
 
+        	//Adds Names For The Blocks And Items
+    		Blocks.addNames();
+        	Items.addNames();
+        	
         	//Adds Crafting
-    		Shaped.addCrafting();	
+    		Shaped.addCrafting();
+    		
+    		//Registers TileEntities
+    		Blocks.registerTileEntities();
         
         }
         
@@ -78,7 +81,7 @@ public class MiscAdditions {
         public void serverLoad(FMLServerStartingEvent event)
         {
         	//Registers Comands
-		        event.registerServerCommand(new SetHomeCommand());
-		        event.registerServerCommand(new HomeCommand());
+		    event.registerServerCommand(new SetHomeCommand());
+		    event.registerServerCommand(new HomeCommand());
         }
 }

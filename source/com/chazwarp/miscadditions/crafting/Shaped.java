@@ -17,10 +17,13 @@ public class Shaped {
 
 	public static void addCrafting() {
 		
-		ItemStack lumberAxe = new ItemStack(Items.axeLumber);
+		ItemStack lumberAxeIron = new ItemStack(Items.axeLumberIron);
+		ItemStack lumberAxeDiamond = new ItemStack(Items.axeLumberDiamond);
 		
-		GameRegistry.addShapedRecipe(lumberAxe, new Object[] {"BI", "IS", " S", 'B', Block.blockIron, 'I', Item.ingotIron, 'S', Item.stick});
+		GameRegistry.addShapedRecipe(lumberAxeIron, new Object[] {"BI", "IS", " S", 'B', Block.blockIron, 'I', Item.ingotIron, 'S', Item.stick});
+		GameRegistry.addShapedRecipe(lumberAxeDiamond, new Object[] {"BD", "DS", " S", 'B', Block.blockDiamond, 'D', Item.diamond, 'S', Item.stick});
 		
+		//Thermal Expansion Dependent Recipes
 		if(CheckInstalled.ThermalExpansion() == true) {
 			
 			ItemStack mobTele = new ItemStack(Blocks.mobTele);

@@ -62,7 +62,9 @@ public class TileEntityMobTeleporter extends TileEnergyHandler {
 	
 	public void teleportEntity(double x, double y, double z, Entity entity) {
 		teleDist = (int) entity.getDistanceSq(x, y, z);
-		entity.setPosition(teleX, teleY+10, teleZ);
-		this.extractEnergy(ForgeDirection.UP, teleDist * 10, false);
+                if(this.extractEnergy(ForgeDirection.UP, teleDist * 10, true) {
+		     entity.setPosition(teleX, teleY+10, teleZ);
+		     this.extractEnergy(ForgeDirection.UP, teleDist * 10, false);
+                }
 	}
 }

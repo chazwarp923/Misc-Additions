@@ -4,37 +4,28 @@
 package com.chazwarp.miscadditions;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.chazwarp.miscadditions.items.Items;
+import com.chazwarp.miscadditions.blocks.ModBlocks;
 
 public class MiscTab extends CreativeTabs
 {
     public static MiscTab tab = new MiscTab();
-    static boolean hasInit;
-    static int icon;
 
     public MiscTab()
     {
         super("miscTab");
     }
 
-    public static void init (int index)
-    {
-        if (!hasInit)
-        {
-            hasInit = true;
-            icon = index;
-        }
-    }
-
-    public int getTabIconItemIndex ()
-    {
-        return icon;
-        
-    	}
     @Override
     public ItemStack getIconItemStack() {
-    	return new ItemStack(Items.axeLumberDiamond, 1, 0);
+    	return new ItemStack(ModBlocks.mobTele);
     }
+
+	@Override
+	public Item getTabIconItem() {
+		return Items.apple;
+	}
 }

@@ -12,135 +12,115 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.DimensionManager;
 
-public class SetHomeCommand implements ICommand
-{
-  private List aliases;
-  EntityPlayer player;
-  private String PLAYER;
-  private String HOME_NAME;
-  private double PLAYER_X;
-  private double PLAYER_Y;
-  private double PLAYER_Z;
-  private int PLAYER_DIM;
-  private boolean correctSyntax = true;
+public class SetHomeCommand implements ICommand {
+	private List<String> aliases;
+	public EntityPlayer player;
+	private String PLAYER;
+	private String HOME_NAME;
+	private double PLAYER_X;
+	private double PLAYER_Y;
+	private double PLAYER_Z;
+  	private int PLAYER_DIM;
+  	private boolean correctSyntax = true;
   
-  public SetHomeCommand()
-  {
-    this.aliases = new ArrayList();
-    this.aliases.add("sethome");
-  }
+  	public SetHomeCommand() {
+  		this.aliases = new ArrayList<String>();
+  		this.aliases.add("sethome");
+  	}
 
-  @Override
-  public String getCommandName()
-  {
-    return "sethome";
-  }
+  	@Override
+  	public String getCommandName() {
+  		return "sethome";
+  	}
 
-  @Override
-  public String getCommandUsage(ICommandSender icommandsender)
-  {
-    return "/sethome [Home Name]";
-  }
+  	@Override
+  	public String getCommandUsage(ICommandSender icommandsender) {	
+  		return "/sethome [Home Name]";
+  	}
 
-  @Override
-  public List getCommandAliases()
-  {
-    return this.aliases;
-  }
+  	@Override
+  	public List<String> getCommandAliases() {
+  		return this.aliases;
+  	}
 
-  @Override
-  public void processCommand(ICommandSender icommandsender, String[] stringArray)
-  { 
+  	@Override
+  	public void processCommand(ICommandSender icommandsender, String[] stringArray) { 
 	
-	//if(stringArray.length == 0) {
-	//	correctSyntax = false;
-	//}
+  		if(stringArray.length == 0) {
+  			correctSyntax = false;
+  		}
 	
-	if(icommandsender instanceof EntityPlayer) {
-        player = (EntityPlayer)icommandsender;
+  		if(icommandsender instanceof EntityPlayer) {
+  			player = (EntityPlayer)icommandsender;
         
-	    if(correctSyntax == true){
-            PLAYER = icommandsender.getCommandSenderName(); 
-            PLAYER_X = player.posX;
-            PLAYER_Y = player.posY;
-            PLAYER_Z = player.posZ;
-            PLAYER_DIM = player.dimension;	
-            HOME_NAME = stringArray[0];
+  			if(correctSyntax == true){
+  				PLAYER = icommandsender.getCommandSenderName(); 
+  				PLAYER_X = player.posX;
+  				PLAYER_Y = player.posY;
+  				PLAYER_Z = player.posZ;
+  				PLAYER_DIM = player.dimension;	
+  				HOME_NAME = stringArray[0];
             
-           
-            ChatMessageComponent chat = new ChatMessageComponent();
-            chat.addText("Home Set");
-            player.sendChatToPlayer(chat);
+  				player.addChatMessage(new ChatComponentText("Home Set"));
             
-            try {
-        		save();
-        	} 
-            catch (Throwable e) {
-        		e.printStackTrace();
-        	}  
-	    }
-		else if(correctSyntax == false) {
-			ChatMessageComponent chat = new ChatMessageComponent();
-	    	chat.addText("Incorrect Syntax, You Need A Name For The Home");
-	    	player.sendChatToPlayer(chat);
-		}
-	}
-	else if(!(icommandsender instanceof EntityPlayer)) {
-	     ChatMessageComponent chat = new ChatMessageComponent();
-	     chat.addText("Player Only Command");
-	     MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chat);
-	}
-  }
+  				try {
+  					save();
+  				} 
+  				catch (Throwable e) {
+  					e.printStackTrace();
+  				}  
+  			}
+  			else if(correctSyntax == false) {
+  				player.addChatMessage(new ChatComponentText("Incorrect Syntax, You Need A Name For The Home"));
+  			}
+  		}
+  		else if(!(icommandsender instanceof EntityPlayer)) {
+  			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("Player Only Command"));
+  		}
+  	}
 
-  @Override
-  public boolean canCommandSenderUseCommand(ICommandSender icommandsender)
-  {
-    return true;
-  }
+  	@Override
+  	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
+  		return true;
+  	}
 
-  @Override
-  public List addTabCompletionOptions(ICommandSender icommandsender, String[] astring) {
-    return null;
-  }
+  	@Override
+  	public List<?> addTabCompletionOptions(ICommandSender icommandsender, String[] astring) {
+  		return null;
+  	}
 
-  @Override
-  public boolean isUsernameIndex(String[] astring, int i)
-  {
-    return false;
-  }
+  	@Override
+  	public boolean isUsernameIndex(String[] astring, int i) {
+  		return false;
+  	}
 
-  @Override
-  public int compareTo(Object o)
-  {
-    return 0;
-  }
+  	@Override
+  	public int compareTo(Object o) {
+  		return 0;
+  	}
   
-  //From here down is all code originally written by Reika and borrowed from DragonAPI
-  // https://github.com/ReikaKalseki/DragonAPI
+  	//From here down is all code originally written by Reika and borrowed from DragonAPI
+  	// https://github.com/ReikaKalseki/DragonAPI
   
-  public final String getSaveFilePath() {
-		File save = DimensionManager.getCurrentSaveRootDirectory();
+  	public final String getSaveFilePath() {
+  		File save = DimensionManager.getCurrentSaveRootDirectory();
 		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
-  }
+  	}
   
-  public final String getSaveFileName() {
-	  return HOME_NAME + ".txt";
-  }
+  	public final String getFullSavePath() {
+  		return this.getSaveFilePath() + HOME_NAME;
+  	}
   
-  public final String getFullSavePath() {
-		return this.getSaveFilePath() + this.getSaveFileName();
-  }
-  
-  private final void save() throws Throwable {
-	  File dir = new File(this.getSaveFilePath());
-	  if (!dir.exists()) {
-			dir.mkdirs();
-		}
-	  File file = new File(this.getFullSavePath());
-		if (file.exists()) {
+  	private final void save() throws Throwable {
+  		File dir = new File(this.getSaveFilePath());
+  		if (!dir.exists()) {
+  			dir.mkdirs();
+  		}
+  		File file = new File(this.getFullSavePath());
+  		if (file.exists()) {
 			file.delete();
 		}
 		file.createNewFile();

@@ -6,8 +6,8 @@ package com.chazwarp.miscadditions.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -16,43 +16,29 @@ import com.chazwarp.miscadditions.lib.BlockInfo;
 import com.chazwarp.miscadditions.lib.Reference;
 import com.chazwarp.miscadditions.tileentity.TileEntityMobTeleporter;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class BlockMobTeleporter extends BlockContainer {
 
-	public BlockMobTeleporter(int id) {
-		super(id, Material.iron);
-
+	public BlockMobTeleporter() {
+		super(Material.iron);
 		setCreativeTab(MiscTab.tab);
-		setHardness(1.5F);
-		setUnlocalizedName(BlockInfo.MOB_TELEPORTER_UNLOCALIZED_NAME);
-		setStepSound(Block.soundMetalFootstep);
-		
+		setHardness(2F);
+		setStepSound(Block.soundTypeMetal);
+		setBlockName(BlockInfo.MOB_TELEPORTER_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.MOB_TELEPORTER_UNLOCALIZED_NAME);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int Integer) {
 		return new TileEntityMobTeleporter();
 	}
-	
+    
     @Override
-    public void onEntityWalking(World world, int x, int y, int z, Entity entity)
-    {
+    public void onFallenUpon(World world, int x, int y, int z, Entity entity, float f) {
+    	
     	TileEntity te;
-        if (!world.isRemote)
-        {
-        	te = world.getBlockTileEntity(x, y-1, z);
-        	if(te instanceof TileEntityMobTeleporter) {        		
-        		((TileEntityMobTeleporter) te).teleportEntity(x+0.5, y, z+0.5, entity);
-        	}
+        if( entity instanceof EntityLivingBase) {
+        	te = world.getTileEntity(x, y, z);
+        	((TileEntityMobTeleporter)te).teleportEntity(x, y, z, (EntityLivingBase)entity);
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister register) {
-		blockIcon = register.registerIcon(Reference.TEXTURE_LOC + ":" + "mobTele");
-		
     }
 }

@@ -3,24 +3,18 @@
 */
 package com.chazwarp.miscadditions.tileentity;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.TileEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
-public class TileEntityMobTeleporter extends TileEnergyHandler {
+public class TileEntityMobTeleporter extends TileEntity implements IEnergyReceiver {
 	
 	protected EnergyStorage storage = new EnergyStorage(400000);
 
-	int teleX;
-	int teleY;
-	int teleZ;
 	int teleDist;
-	
-	public TileEntityMobTeleporter() {
-		
-	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -33,21 +27,21 @@ public class TileEntityMobTeleporter extends TileEnergyHandler {
 		super.writeToNBT(nbt);
 		storage.writeToNBT(nbt);
 	}
+	
+	//IEnergyReceiver
+	@Override
+	public boolean canConnectEnergy(ForgeDirection from) {
+		if(from != ForgeDirection.UP) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
-	/* IEnergyHandler */
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 		return storage.receiveEnergy(maxReceive, simulate);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		return storage.extractEnergy(maxExtract, simulate);
-	}
-
-	@Override
-	public boolean canInterface(ForgeDirection from) {
-		return true;
 	}
 
 	@Override
@@ -60,11 +54,13 @@ public class TileEntityMobTeleporter extends TileEnergyHandler {
 		return storage.getMaxEnergyStored();
 	}
 	
-	public void teleportEntity(double x, double y, double z, Entity entity) {
-		teleDist = (int) entity.getDistanceSq(x, y, z);
-                if(this.extractEnergy(ForgeDirection.UP, teleDist * 10, true) {
-		     entity.setPosition(teleX, teleY+10, teleZ);
-		     this.extractEnergy(ForgeDirection.UP, teleDist * 10, false);
-                }
+	public void teleportEntity(double x, double y, double z, EntityLivingBase entity) {
+		
+		teleDist = (int)entity.getDistance(x, y, z);
+		
+        if(storage.extractEnergy(teleDist * 10, true) == teleDist * 10) {
+        	entity.setPositionAndUpdate(x+0.5, y + 10, z+0.5);
+            storage.extractEnergy(teleDist * 10, false);
+        }
 	}
 }

@@ -14,177 +14,116 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.DimensionManager;
 
-public class HomeCommand implements ICommand, ICommandSender
-{
-  private List aliases;
-  private String PLAYER;
-  private String HOME_NAME;
-  private double[] lines = new double[4];
-  private boolean correctSyntax = true;
-  private EntityPlayer player;
+public class HomeCommand implements ICommand {
+	private List<String> aliases;
+	private String PLAYER;
+	private String HOME_NAME;
+	private double[] lines = new double[4];
+	private boolean correctSyntax = true;
+	private EntityPlayer player;
   
-  public HomeCommand()
-  {
-    this.aliases = new ArrayList();
-    this.aliases.add("home");
-  }
+	public HomeCommand() {
+		this.aliases = new ArrayList<String>();
+		this.aliases.add("home");
+	}
 
-  @Override
-  public String getCommandName()
-  {
-    return "home";
-  }
+	@Override
+	public String getCommandName() {
+		return "home";
+	}
 
-  @Override
-  public String getCommandUsage(ICommandSender icommandsender)
-  {
-    return "/home [Home Name]";
-  }
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/home [Home Name]";
+	}
 
-  @Override
-  public List getCommandAliases()
-  {
-    return this.aliases;
-  }
+	@Override
+	public List<String> getCommandAliases() {
+		return this.aliases;
+	}
 
-  @Override
-  public void processCommand(ICommandSender icommandsender, String[] stringArray)
-  {
-		//if(stringArray.length == 0) {
-		//	correctSyntax = false;
-		//}
+	@Override
+	public void processCommand(ICommandSender iCommandSender, String[] stringArray) {
+		if(stringArray.length == 0) {
+			correctSyntax = false;
+		}
 		
-		if(icommandsender instanceof EntityPlayer) {
-	        player = (EntityPlayer)icommandsender;
+		if(iCommandSender instanceof EntityPlayer) {
+	        player = (EntityPlayer)iCommandSender;
 	        
 		    if(correctSyntax == true){
-	            PLAYER = icommandsender.getCommandSenderName();	            
+	            PLAYER = iCommandSender.getCommandSenderName();	            
 	            HOME_NAME = stringArray[0];
 	           
 	            MinecraftServer minecraftserver = MinecraftServer.getServer();
 
 	            if (minecraftserver != null)
 	            {
-	                //ICommandManager icommandmanager = minecraftserver.getCommandManager();
 	                read();
-	                //icommandmanager.executeCommand(icommandsender, "tp" + PLAYER + lines[0] + lines[1] + lines[2]);
 	                player.setPositionAndUpdate(lines[0], lines[1], lines[2]);              
 	            } 
-	            
-	            ChatMessageComponent chat = new ChatMessageComponent();
-	            chat.addText("You Went Home");
-	            player.sendChatToPlayer(chat);	             
+
+	            player.addChatMessage(new ChatComponentText("Welcome Home"));
 		    }
 		    else if(correctSyntax == false) {
-				ChatMessageComponent chat = new ChatMessageComponent();
-		    	chat.addText("Incorrect Syntax, You Need to Specify a Home");
-		    	player.sendChatToPlayer(chat);
+		    	player.addChatMessage(new ChatComponentText("Incorrect Syntax, Please Specify a Home"));
 			}
 		}
-		else if(!(icommandsender instanceof EntityPlayer)) {
-		     ChatMessageComponent chat = new ChatMessageComponent();
-		     chat.addText("Player Only Command");
-		     MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chat);
+		else if(!(iCommandSender instanceof EntityPlayer)) {
+		     MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("Player Only Command"));
 		}      
-  }
-
-  @Override
-  public boolean canCommandSenderUseCommand(ICommandSender icommandsender)
-  {
-    return true;
-  }
-
-  @Override
-  public List addTabCompletionOptions(ICommandSender icommandsender, String[] astring)
-  {
-	  String[] options;
-	  PLAYER = icommandsender.getCommandSenderName();
-	  
-	  listFilesForFolder(new File(getFullSavePath()));
-    return null;
-  }
-
-  @Override
-  public boolean isUsernameIndex(String[] astring, int i)
-  {
-    return false;
-  }
-
-  @Override
-  public int compareTo(Object o)
-  {
-    return 0;
-  }
-  
-  //Begin ICommand Sender Methods
-  @Override
-  public String getCommandSenderName() {
-  	return "Home Command";
-  }
-
-  @Override
-  public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) {
-  	
-  }
-
-  @Override
-  public boolean canCommandSenderUseCommand(int i, String s) {
-  	return true;
-  }
-
-  @Override
-  public ChunkCoordinates getPlayerCoordinates() {
-	  if(player != null) {
-		  return player.playerLocation;
-	  }
-	  else {
-		  return null; 
-	  }
-  }
-
-  @Override
-  public World getEntityWorld() {
-	  if(player != null) {
-		  return player.getEntityWorld(); 
-	  }
-	  else {
-		  return null;
-	  }
-  }
-  
-  public String[] listFilesForFolder(final File folder) {
-	    for (final File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry);
-	        } else {
-	            System.out.println(fileEntry.getName());
-	        }
-	    }
-		return null;
 	}
-  
- //From here down is all code originally written by Reika and borrowed from DragonAPI
- // https://github.com/ReikaKalseki/DragonAPI
-  
-  public final String getSaveFilePath() {
+
+	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
+		return true;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List addTabCompletionOptions(ICommandSender icommandsender, String[] stringArray) {
+		PLAYER = icommandsender.getCommandSenderName();
+	  
+		File[] fileArray = listFilesForFolder(new File(getSaveFilePath()));
+		List<String> stringArrayList = new ArrayList<String>(); 
+		
+		for(int i=0; i < fileArray.length; i++) {
+			stringArrayList.add(fileArray[i].getName());
+		}
+		
+		return stringArray.length == 1 ? stringArrayList : null;
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] astring, int i) {
+		return false;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
+	}
+	  
+	public File[] listFilesForFolder(File folder) {
+		return folder.listFiles();
+	}
+	  
+	//From here down is all code originally written by Reika and borrowed from DragonAPI
+	// https://github.com/ReikaKalseki/DragonAPI
+	  
+	public final String getSaveFilePath() {
 		File save = DimensionManager.getCurrentSaveRootDirectory();
 		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
-  }
-  
-  public final String getSaveFileName() {
-	  return HOME_NAME + ".txt";
-  }
-  
-  public final String getFullSavePath() {
-		return this.getSaveFilePath() + this.getSaveFileName();
-  }
-  
-  private final void read() {
+	}
+	  
+	public final String getFullSavePath() {
+		return this.getSaveFilePath() + HOME_NAME;
+	}
+	  
+	private final void read() {
 		try {
 			BufferedReader p = new BufferedReader(new InputStreamReader(new FileInputStream(this.getFullSavePath())));
 			for(int i=0; i<4; i++){
@@ -195,6 +134,5 @@ public class HomeCommand implements ICommand, ICommandSender
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-  }
-		
+	}
 }

@@ -3,16 +3,17 @@
 */
 package com.chazwarp.miscadditions;
 
-import com.chazwarp.miscadditions.blocks.Blocks;
+import java.io.File;
+
+import com.chazwarp.miscadditions.blocks.ModBlocks;
 import com.chazwarp.miscadditions.crafting.Shaped;
-import com.chazwarp.miscadditions.items.Items;
+import com.chazwarp.miscadditions.items.ModItems;
 import com.chazwarp.miscadditions.lib.Reference;
 import com.chazwarp.miscadditions.server.HomeCommand;
 import com.chazwarp.miscadditions.server.SetHomeCommand;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -22,9 +23,11 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies="required-after:ThermalExpansion")
 
 public class MiscAdditions {
+	
+		public static File configFile;
 
 		// The instance of your mod that Forge uses.
-    	@Instance(Reference.MOD_ID)
+		@Mod.Instance(Reference.MOD_ID)
     	public static MiscAdditions instance;
     	
     	// Says where the client and server 'proxy' code is loaded.
@@ -35,8 +38,8 @@ public class MiscAdditions {
         public void preInit(FMLPreInitializationEvent event) {
         	
         	//Adds Blocks And Items
-        		Blocks.initBlocks();
-            	Items.initItems();
+        		ModBlocks.registerBlocks();
+            	ModItems.registerItems();
         		
         	//Registers Things With The Proxy
         		proxy.registerRenderers();
@@ -44,7 +47,7 @@ public class MiscAdditions {
         	//Hard Codes The Mod Data
 	        	event.getModMetadata().credits = "";
 	        	event.getModMetadata().description = "A Collection of Random Things That Don't Need Their Own Mods";
-	        	event.getModMetadata().logoFile = "assets/" + Reference.MOD_ID +"/textures/logo.png";
+	        	event.getModMetadata().logoFile = "assets/" + Reference.TEXTURE_LOC +"/textures/logo.png";
 	        	event.getModMetadata().modId = Reference.MOD_ID;
 	        	event.getModMetadata().name = Reference.MOD_NAME;
 	        	event.getModMetadata().version = Reference.VERSION;
@@ -52,16 +55,12 @@ public class MiscAdditions {
         
         @EventHandler
         public void Init(FMLInitializationEvent event) {
-
-        	//Adds Names For The Blocks And Items
-    		Blocks.addNames();
-        	Items.addNames();
         	
         	//Adds Crafting
     		Shaped.addCrafting();
     		
     		//Registers TileEntities
-    		Blocks.registerTileEntities();
+    		ModBlocks.registerTileEntities();
         
         }
         

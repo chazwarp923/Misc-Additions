@@ -1,2 +1,9 @@
 itemGroup.miscTab=Miscellaneous Additions
-item.axeLumber=Lumber Axe
+
+tile.decorativeBlock.name=Decorative Block
+tile.maglevPowerInput.name=Maglev Power Input
+tile.mobTeleporter.name=Mob Teleporter
+tile.wall.name=Wall
+tile.logMossy.name=Mossy Log
+
+item.axeLumber.name=Lumber Axe

@@ -7,6 +7,7 @@ import java.io.File;
 
 import com.chazwarp.miscadditions.blocks.ModBlocks;
 import com.chazwarp.miscadditions.crafting.Shaped;
+import com.chazwarp.miscadditions.fluid.Fluids;
 import com.chazwarp.miscadditions.items.ModItems;
 import com.chazwarp.miscadditions.lib.Reference;
 import com.chazwarp.miscadditions.server.HomeCommand;
@@ -20,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies="required-after:ThermalExpansion")
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies="required-after:CoFHCore")
 
 public class MiscAdditions {
 	
@@ -35,45 +36,45 @@ public class MiscAdditions {
         public static CommonProxy proxy;
         
         @EventHandler
-        public void preInit(FMLPreInitializationEvent event) {
+        public void preInit(FMLPreInitializationEvent preInitEvent) {
         	
         	//Adds Blocks And Items
+        		Fluids.registerFluids();
         		ModBlocks.registerBlocks();
             	ModItems.registerItems();
         		
         	//Registers Things With The Proxy
         		proxy.registerRenderers();
         	
-        	//Hard Codes The Mod Data
-	        	event.getModMetadata().credits = "";
-	        	event.getModMetadata().description = "A Collection of Random Things That Don't Need Their Own Mods";
-	        	event.getModMetadata().logoFile = "assets/" + Reference.TEXTURE_LOC +"/textures/logo.png";
-	        	event.getModMetadata().modId = Reference.MOD_ID;
-	        	event.getModMetadata().name = Reference.MOD_NAME;
-	        	event.getModMetadata().version = Reference.VERSION;
+        	//Hard Codes The Mod Data   
+        		preInitEvent.getModMetadata().credits = "Reika";
+        		preInitEvent.getModMetadata().description = "A Collection of Random Things That Don't Need Their Own Mods";
+        		preInitEvent.getModMetadata().logoFile = "assets/" + Reference.TEXTURE_LOC +"/textures/logo.png";
+        		preInitEvent.getModMetadata().modId = Reference.MOD_ID;
+        		preInitEvent.getModMetadata().name = Reference.MOD_NAME;
+        		preInitEvent.getModMetadata().version = Reference.VERSION;
         }
         
         @EventHandler
-        public void Init(FMLInitializationEvent event) {
+        public void Init(FMLInitializationEvent initEvent) {
         	
         	//Adds Crafting
     		Shaped.addCrafting();
     		
     		//Registers TileEntities
     		ModBlocks.registerTileEntities();
-        
         }
         
         @EventHandler
-        public void postInit(FMLPostInitializationEvent event) {
+        public void postInit(FMLPostInitializationEvent postInitEvent) {
         	
         }
         
         @EventHandler
-        public void serverLoad(FMLServerStartingEvent event)
+        public void serverLoad(FMLServerStartingEvent serverStartEvent)
         {
         	//Registers Comands
-		    event.registerServerCommand(new SetHomeCommand());
-		    event.registerServerCommand(new HomeCommand());
+        	serverStartEvent.registerServerCommand(new SetHomeCommand());
+        	serverStartEvent.registerServerCommand(new HomeCommand());
         }
 }

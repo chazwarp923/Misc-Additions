@@ -1,21 +1,19 @@
 [
-{
-  "modid": "MiscAdd",
-  "name": "Miscellaneous Additions",
-  "description": "",
-  "version": "",
-  "mcversion": "",
-  "url": "",
-  "updateUrl": "",
-  "authors": [
-    "chazwarp923"
-  ],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [
-  ],
-  "parent":"",
-  "dependencies": [
-  ]
-}
+    {
+        "modid": "MiscAdditions",
+        "name": "Misc Additions",
+        "description": "A Collection of Random Things That Don't Need Their Own Mods",
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+        "url": "",
+        "updateUrl": "",
+        "authorList": ["chazwarp923"],
+        "credits": "Reika",
+        "logoFile": "",
+        "parent": "",
+        "screenshots": [],
+        "dependencies": [
+            "MinecraftForge,CoFHCore"
+        ]
+    }
 ]

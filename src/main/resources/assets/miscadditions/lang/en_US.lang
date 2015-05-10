@@ -3,7 +3,9 @@ itemGroup.miscTab=Miscellaneous Additions
 tile.decorativeBlock.name=Decorative Block
 tile.maglevPowerInput.name=Maglev Power Input
 tile.mobTeleporter.name=Mob Teleporter
-tile.wall.name=Wall
-tile.logMossy.name=Mossy Log
+tile.fluidGasoline.name=Gasoline
+tile.fluidDiesel.name=Diesel
+tile.fluidPropane.name=Propane
+tile.fluidKerosene.name=Kerosene
 
 item.axeLumber.name=Lumber Axe

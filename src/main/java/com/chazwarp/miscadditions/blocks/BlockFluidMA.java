@@ -23,15 +23,15 @@ public class BlockFluidMA extends BlockFluidClassic {
 	protected String fluidName;
 	
 	@SideOnly(Side.CLIENT)
-	protected static IIcon stillIcon;
+	protected IIcon stillIcon;
 	@SideOnly(Side.CLIENT)
-	protected static IIcon flowingIcon;
+	protected IIcon flowingIcon;
 	
 	public BlockFluidMA(Fluid fluid, Material material, String unlocalizedName, String key) {
 		super(fluid, material);
 		setCreativeTab(MiscTab.tab);
 		setBlockName(unlocalizedName);
-		fluidName = key;
+		fluidName = key.toLowerCase();
 	}
 	
 	@Override
@@ -42,8 +42,8 @@ public class BlockFluidMA extends BlockFluidClassic {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(Reference.RESOURCE_PREFIX + fluidName + "Still");
-		flowingIcon = register.registerIcon(Reference.RESOURCE_PREFIX + fluidName + "Flowing");
+		stillIcon = register.registerIcon(Reference.RESOURCE_PREFIX + fluidName + "_still");
+		flowingIcon = register.registerIcon(Reference.RESOURCE_PREFIX + fluidName + "_flow");
 	}
 	
 	@Override

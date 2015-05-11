@@ -1,5 +1,10 @@
 itemGroup.miscTab=Miscellaneous Additions
 
+fluid.fluidGasoline=Gasoline
+fluid.fluidDiesel=Diesel
+fluid.fluidPropane=Propane
+fluid.fluidKerosene=Kerosene
+
 tile.decorativeBlock.name=Decorative Block
 tile.maglevPowerInput.name=Maglev Power Input
 tile.mobTeleporter.name=Mob Teleporter

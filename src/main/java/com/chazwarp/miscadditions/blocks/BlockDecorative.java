@@ -22,8 +22,8 @@ public class BlockDecorative extends Block {
 		setCreativeTab(MiscTab.tab);
 		setHardness(2F);
 		setStepSound(Block.soundTypeWood);
-		setBlockName(BlockInfo.DECORATIVE_UNLOCALIZED_NAME);
-		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.DECORATIVE_UNLOCALIZED_NAME);
+		setBlockName(BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME);
 	}
 	
 	

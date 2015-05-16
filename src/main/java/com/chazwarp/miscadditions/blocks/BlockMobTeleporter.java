@@ -1,5 +1,5 @@
 /**
-*@author Chaz Kerby
+ *@author Chaz Kerby
 */
 package com.chazwarp.miscadditions.blocks;
 
@@ -23,8 +23,8 @@ public class BlockMobTeleporter extends BlockContainer {
 		setCreativeTab(MiscTab.tab);
 		setHardness(2F);
 		setStepSound(Block.soundTypeMetal);
-		setBlockName(BlockInfo.MOB_TELEPORTER_UNLOCALIZED_NAME);
-		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.MOB_TELEPORTER_UNLOCALIZED_NAME);
+		setBlockName(BlockInfo.BLOCK_MOB_TELEPORTER_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_MOB_TELEPORTER_UNLOCALIZED_NAME);
 	}
 	
 	@Override

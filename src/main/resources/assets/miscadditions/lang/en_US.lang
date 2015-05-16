@@ -1,16 +1,19 @@
 itemGroup.miscTab=Miscellaneous Additions
 
-fluid.fluidGasoline=Gasoline
-fluid.fluidDiesel=Diesel
-fluid.fluidPropane=Propane
-fluid.fluidKerosene=Kerosene
+fluid.gasoline=Gasoline
+fluid.diesel=Diesel
+fluid.liquifedPetroleumGas=Liquified Petroleum Gas
+fluid.kerosene=Kerosene
 
 tile.decorativeBlock.name=Decorative Block
 tile.maglevPowerInput.name=Maglev Power Input
 tile.mobTeleporter.name=Mob Teleporter
-tile.fluidGasoline.name=Gasoline
-tile.fluidDiesel.name=Diesel
-tile.fluidPropane.name=Propane
-tile.fluidKerosene.name=Kerosene
+tile.gasoline.name=Gasoline
+tile.diesel.name=Diesel
+tile.liquifiedPetroleumGas.name=Liquified Petroleum Gas
+tile.kerosene.name=Kerosene
+tile.fractionationTower.name=Fractionation Tower Block
+tile.fractionationTowerPowerInput.name=Fractionation Tower Power Input
+tile.fractionationTowerFluidIO.name=Fractionation Tower Fluid IO
 
 item.axeLumber.name=Lumber Axe

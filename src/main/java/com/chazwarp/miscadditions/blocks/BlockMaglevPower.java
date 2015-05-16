@@ -21,12 +21,12 @@ public class BlockMaglevPower extends BlockContainer {
 		setCreativeTab(MiscTab.tab);
 		setHardness(2F);
 		setStepSound(Block.soundTypeMetal);
-		setBlockName(BlockInfo.MAGLEV_POWER_UNLOCALIZED_NAME);
-		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.MAGLEV_POWER_UNLOCALIZED_NAME);		
+		setBlockName(BlockInfo.BLOCK_MAGLEV_POWER_INPUT_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_MAGLEV_POWER_INPUT_UNLOCALIZED_NAME);
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int Integer) {
+	public TileEntity createNewTileEntity(World world, int integer) {
 		return new TileEntityMaglevPower();
 	}
 }

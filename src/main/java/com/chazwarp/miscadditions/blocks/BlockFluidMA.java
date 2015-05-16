@@ -31,7 +31,7 @@ public class BlockFluidMA extends BlockFluidClassic {
 		super(fluid, material);
 		setCreativeTab(MiscTab.tab);
 		setBlockName(unlocalizedName);
-		fluidName = key.toLowerCase();
+		fluidName = unlocalizedName;
 	}
 	
 	@Override

@@ -1,10 +1,8 @@
 package buildcraft.api.items;
 
 import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import buildcraft.api.core.BlockIndex;
 import buildcraft.api.core.IBox;
 import buildcraft.api.core.IZone;
@@ -12,7 +10,7 @@ import buildcraft.api.core.IZone;
 /**
  * Created by asie on 2/28/15.
  */
-public interface IMapLocation extends INamedItem {
+public interface IMapLocation {
 	public enum MapLocationType {
 		CLEAN, SPOT, AREA, PATH, ZONE
 	}

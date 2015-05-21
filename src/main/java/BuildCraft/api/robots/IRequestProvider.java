@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 
 
 public interface IRequestProvider {
+
 	/**
 	 * Return the total number of request slots available from this provider.
 	 */

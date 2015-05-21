@@ -12,6 +12,9 @@ import com.chazwarp.miscadditions.MiscTab;
 import com.chazwarp.miscadditions.lib.BlockInfo;
 import com.chazwarp.miscadditions.lib.Reference;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class BlockDecorative extends Block {
 	
 	public static IIcon[] textures = new IIcon[47];
@@ -26,11 +29,12 @@ public class BlockDecorative extends Block {
 		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME);
 	}
 	
-	
-	public void registerIcons(IIconRegister iconRegistry) {
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister iconRegistry) {
 		 
 		for (int i = 0; i < 47; i++) {
-			textures[i] = iconRegistry.registerIcon(Reference.TEXTURE_LOC + ":decorative_" + (i+1));
+			textures[i] = iconRegistry.registerIcon(Reference.RESOURCE_PREFIX + "decorative_" + (i+1));
 		}
 	}
 	

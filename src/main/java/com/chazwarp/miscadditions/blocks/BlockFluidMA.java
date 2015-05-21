@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -21,17 +22,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockFluidMA extends BlockFluidClassic {
 
 	protected String fluidName;
+	private boolean flammable;
 	
 	@SideOnly(Side.CLIENT)
 	protected IIcon stillIcon;
 	@SideOnly(Side.CLIENT)
 	protected IIcon flowingIcon;
 	
-	public BlockFluidMA(Fluid fluid, Material material, String unlocalizedName, String key) {
+	public BlockFluidMA(Fluid fluid, Material material, String unlocalizedName, String key, boolean flammable) {
 		super(fluid, material);
 		setCreativeTab(MiscTab.tab);
 		setBlockName(unlocalizedName);
 		fluidName = unlocalizedName;
+		this.flammable = flammable;
 	}
 	
 	@Override
@@ -64,5 +67,10 @@ public class BlockFluidMA extends BlockFluidClassic {
 		else {
 			return super.displaceIfPossible(world, x, y, z);
 		}
+	}
+	
+	@Override
+	public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+		return flammable;
 	}
 }

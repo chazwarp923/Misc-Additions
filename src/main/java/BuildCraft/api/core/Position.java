@@ -12,6 +12,7 @@ import io.netty.buffer.ByteBuf;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class Position implements ISerializable {
@@ -191,10 +192,5 @@ public class Position implements ISerializable {
 		stream.writeDouble(y);
 		stream.writeDouble(z);
 		stream.writeByte(orientation.ordinal());
-	}
-
-	@Override
-	public int hashCode() {
-		return (51 * (int) x) + (13 * (int) y) + (int) z;
 	}
 }

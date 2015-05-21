@@ -10,10 +10,12 @@ package buildcraft.api.statements;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public interface IStatement {
+
 	/**
 	 * Every statement needs a unique tag, it should be in the format of
 	 * "&lt;modid&gt;:&lt;name&gt;.

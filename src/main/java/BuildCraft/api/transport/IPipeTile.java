@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
 import buildcraft.api.core.EnumColor;
@@ -52,7 +53,6 @@ public interface IPipeTile extends IInjectable {
 	boolean hasBlockingPluggable(ForgeDirection direction);
 
 	void scheduleNeighborChange();
-	void scheduleRenderUpdate();
 
 	// For compatibility with BC 6.2.x and below
 	int injectItem(ItemStack stack, boolean doAdd, ForgeDirection from, EnumColor color);

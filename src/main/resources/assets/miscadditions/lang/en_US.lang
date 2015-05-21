@@ -2,7 +2,7 @@ itemGroup.miscTab=Miscellaneous Additions
 
 fluid.gasoline=Gasoline
 fluid.diesel=Diesel
-fluid.liquifedPetroleumGas=Liquified Petroleum Gas
+fluid.liquifiedPetroleumGas=Liquified Petroleum Gas
 fluid.kerosene=Kerosene
 
 tile.decorativeBlock.name=Decorative Block

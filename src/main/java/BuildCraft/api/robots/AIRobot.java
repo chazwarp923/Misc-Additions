@@ -17,11 +17,8 @@ public class AIRobot {
 	private AIRobot delegateAI;
 	private AIRobot parentAI;
 
-	private boolean success;
-
 	public AIRobot(EntityRobotBase iRobot) {
 		robot = iRobot;
-		success = true;
 	}
 
 	public void start() {
@@ -43,18 +40,10 @@ public class AIRobot {
 
 	}
 
-	/**
-	 * This gets called when a delegate AI ends work naturally.
-	 * @param ai The delegate AI which ended work.
-	 */
 	public void delegateAIEnded(AIRobot ai) {
 
 	}
 
-	/**
-	 * This gets called when a delegate AI is forcibly aborted.
-	 * @param ai The delegate AI which was aborted.
-	 */
 	public void delegateAIAborted(AIRobot ai) {
 
 	}
@@ -68,11 +57,7 @@ public class AIRobot {
 	}
 
 	public boolean success() {
-		return success;
-	}
-
-	protected void setSuccess(boolean iSuccess) {
-		success = iSuccess;
+		return true;
 	}
 
 	public int getEnergyCost() {

@@ -1,17 +1,20 @@
 /**
-@author Chaz Kerby
+*@author Chaz Kerby
 */
-
 package com.chazwarp.miscadditions.blocks.tileentity;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.TileEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
-public class TileEntityFractionationTowerPowerInput extends TileEnergyHandler {
+public class TileEntityMobTeleporter extends TileEntity implements IEnergyReceiver {
 	
-	protected EnergyStorage storage = new EnergyStorage(100000);
+	protected EnergyStorage storage = new EnergyStorage(400000);
+
+	int teleDist;
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -24,11 +27,16 @@ public class TileEntityFractionationTowerPowerInput extends TileEnergyHandler {
 		super.writeToNBT(nbt);
 		storage.writeToNBT(nbt);
 	}
-
-	/** IEnergyReceiver */
+	
+	//IEnergyReceiver
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
-		return true;
+		if(from != ForgeDirection.UP) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
@@ -44,5 +52,15 @@ public class TileEntityFractionationTowerPowerInput extends TileEnergyHandler {
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
 		return storage.getMaxEnergyStored();
+	}
+	
+	public void teleportEntity(double x, double y, double z, EntityLivingBase entity) {
+		
+		teleDist = (int)entity.getDistance(x, y, z);
+		
+        if(storage.extractEnergy(teleDist * 10, true) == teleDist * 10) {
+        	entity.setPositionAndUpdate(x+0.5, y + 10, z+0.5);
+            storage.extractEnergy(teleDist * 10, false);
+        }
 	}
 }

@@ -1,6 +1,7 @@
 package buildcraft.api.transport;
 
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
 import buildcraft.api.core.EnumColor;

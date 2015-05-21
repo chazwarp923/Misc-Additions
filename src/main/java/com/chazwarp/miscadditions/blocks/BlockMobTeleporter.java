@@ -12,9 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.chazwarp.miscadditions.MiscTab;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityMobTeleporter;
 import com.chazwarp.miscadditions.lib.BlockInfo;
 import com.chazwarp.miscadditions.lib.Reference;
-import com.chazwarp.miscadditions.tileentity.TileEntityMobTeleporter;
 
 public class BlockMobTeleporter extends BlockContainer {
 

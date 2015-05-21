@@ -4,15 +4,16 @@
 
 package com.chazwarp.miscadditions.blocks;
 
-import com.chazwarp.miscadditions.MiscTab;
-import com.chazwarp.miscadditions.lib.BlockInfo;
-import com.chazwarp.miscadditions.lib.Reference;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import com.chazwarp.miscadditions.MiscTab;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerPowerInput;
+import com.chazwarp.miscadditions.lib.BlockInfo;
+import com.chazwarp.miscadditions.lib.Reference;
 
 public class BlockFractionationTowerPowerInput extends BlockContainer {
 
@@ -24,9 +25,9 @@ public class BlockFractionationTowerPowerInput extends BlockContainer {
 		setBlockName(BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_UNLOCALIZED_NAME);
 		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_UNLOCALIZED_NAME);
 	}
-
+	
 	@Override
-	public TileEntity createNewTileEntity(World world, int integer) {
-		return null;
+	public TileEntity createNewTileEntity(World world, int Integer) {
+		return new TileEntityFractionationTowerPowerInput();
 	}
 }

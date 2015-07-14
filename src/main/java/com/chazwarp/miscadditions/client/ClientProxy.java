@@ -1,15 +1,15 @@
 /**
 @author Chaz Kerby
-*/
+ */
 package com.chazwarp.miscadditions.client;
 
 import com.chazwarp.miscadditions.CommonProxy;
 
 public class ClientProxy extends CommonProxy {
-       
-        @Override
-        public void registerRenderers() {
-                // This is for rendering entities and so forth later on
-        }
-       
+
+	@Override
+	public void registerRenderers() {
+		// This is for rendering entities and so forth later on
+	}
+
 }

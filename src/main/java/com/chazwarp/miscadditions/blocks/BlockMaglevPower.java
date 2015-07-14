@@ -1,6 +1,6 @@
 /**
-*@author Chaz Kerby
-*/
+ *@author Chaz Kerby
+ */
 package com.chazwarp.miscadditions.blocks;
 
 import net.minecraft.block.Block;
@@ -15,16 +15,17 @@ import com.chazwarp.miscadditions.lib.BlockInfo;
 import com.chazwarp.miscadditions.lib.Reference;
 
 public class BlockMaglevPower extends BlockContainer {
-	
+
 	public BlockMaglevPower() {
 		super(Material.iron);
 		setCreativeTab(MiscTab.tab);
 		setHardness(2F);
 		setStepSound(Block.soundTypeMetal);
 		setBlockName(BlockInfo.BLOCK_MAGLEV_POWER_INPUT_UNLOCALIZED_NAME);
-		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_MAGLEV_POWER_INPUT_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX
+				+ BlockInfo.BLOCK_MAGLEV_POWER_INPUT_UNLOCALIZED_NAME);
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int integer) {
 		return new TileEntityMaglevPower();

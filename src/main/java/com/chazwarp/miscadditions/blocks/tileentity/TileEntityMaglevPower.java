@@ -1,6 +1,6 @@
 /**
-*@author Chaz Kerby
-*/
+ *@author Chaz Kerby
+ */
 package com.chazwarp.miscadditions.blocks.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,16 +29,16 @@ public class TileEntityMaglevPower extends TileEnergyHandler {
 	/** IEnergyReceiver */
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
-		if(from != ForgeDirection.UP) {
+		if (from != ForgeDirection.UP) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ForgeDirection from, int maxReceive,
+			boolean simulate) {
 		return storage.receiveEnergy(maxReceive, simulate);
 	}
 

@@ -1,6 +1,6 @@
 /**
 @author Chaz Kerby
-*/
+ */
 
 package com.chazwarp.miscadditions.blocks;
 
@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import buildcraft.api.tools.IToolWrench;
 
 import com.chazwarp.miscadditions.MiscTab;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
 import com.chazwarp.miscadditions.lib.BlockInfo;
 import com.chazwarp.miscadditions.lib.Reference;
@@ -27,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockFractionationTowerFluidIO extends BlockContainer {
 
 	protected IIcon[] textures;
-	
+
 	protected BlockFractionationTowerFluidIO() {
 		super(Material.iron);
 		setCreativeTab(MiscTab.tab);
@@ -38,61 +39,80 @@ public class BlockFractionationTowerFluidIO extends BlockContainer {
 	}
 
 	@Override
+	public TileEntity createNewTileEntity(World world, int integer) {
+		return new TileEntityFractionationTowerFluidIO();
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegistry) {
 		textures = new IIcon[5];
-		
+
 		textures[0] = iconRegistry.registerIcon(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_UNLOCALIZED_NAME + "_Oil");
 		textures[1] = iconRegistry.registerIcon(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_UNLOCALIZED_NAME + "_Gasoline");
 		textures[2] = iconRegistry.registerIcon(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_UNLOCALIZED_NAME + "_Diesel");
 		textures[3] = iconRegistry.registerIcon(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_UNLOCALIZED_NAME + "_LiquifiedPetroleumGas");
 		textures[4] = iconRegistry.registerIcon(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_UNLOCALIZED_NAME + "_Kerosene");
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon (IBlockAccess world, int x, int y, int z, int side) {
-		TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO)world.getTileEntity(x, y, z);
-		
-		switch(te.getMode()){
-		case 0: return textures[0];
-		case 1: return textures[1];
-		case 2: return textures[2];
-		case 3: return textures[3];
-		case 4: return textures[4];
-		default: return textures[0];
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+		TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO) world
+				.getTileEntity(x, y, z);
+
+		switch (te.getMode()) {
+		case 0:
+			return textures[0];
+		case 1:
+			return textures[1];
+		case 2:
+			return textures[2];
+		case 3:
+			return textures[3];
+		case 4:
+			return textures[4];
+		default:
+			return textures[0];
 		}
-    }
-	
-	@Override
-	public TileEntity createNewTileEntity(World world, int integer) {
-		return new TileEntityFractionationTowerFluidIO();
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int side, float par7, float par8, float par9) {
 		Item equipped = ep.getCurrentEquippedItem() != null ? ep.getCurrentEquippedItem().getItem() : null;
-		
-		if(equipped instanceof IToolWrench && ((IToolWrench) equipped).canWrench(ep, x, y, z)) {
-			if(world.getTileEntity(x, y, z) instanceof TileEntityFractionationTowerFluidIO) {
-				TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO)world.getTileEntity(x, y, z);
-				te.cycleFluid();
+
+		if (equipped instanceof IToolWrench && ((IToolWrench)equipped).canWrench(ep, x, y, z)) {
+			if (world.getTileEntity(x, y, z) instanceof TileEntityFractionationTowerFluidIO) {
+				TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO) world.getTileEntity(x, y, z);
+				te.cycleMode();
 			}
 			return true;
 		}
+		else if(equipped == null) {
+			if(world.getTileEntity(x, y, z) instanceof TileEntityFractionationTower) {
+				TileEntityFractionationTower tile = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
+				if(tile.hasBlocksAround(x, y, z)) {
+					tile.setIsMasterBlock();
+					System.out.println("[MiscAdd] Setup Fractionation Tower MultiBlock");
+				}
+			}
+			return true;
+		}
+		
 		else {
 			return false;
 		}
 	}
 	
 	@Override
-	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta) {
+		TileEntityFractionationTower tile = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
 		
-		
-		return (Integer)null;
-	}
-	
-	public boolean isMultiblockValid(IBlockAccess blockAcess, int x, int y, int z) {
-		return ((blockAcess.getBlock(x , y, z)))
+		if(tile != null && tile instanceof TileEntityFractionationTower) {
+			if(tile.hasMasterBlock()) {
+				TileEntityFractionationTower masterTile = (TileEntityFractionationTower)world.getTileEntity(tile.masterX, tile.masterY, tile.masterZ);
+				masterTile.resetStructure();
+			}
+		}
 	}
 }

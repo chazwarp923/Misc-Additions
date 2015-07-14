@@ -1,6 +1,6 @@
 /**
  *@author Chaz Kerby
-*/
+ */
 package com.chazwarp.miscadditions.blocks;
 
 import net.minecraft.block.Block;
@@ -24,21 +24,24 @@ public class BlockMobTeleporter extends BlockContainer {
 		setHardness(2F);
 		setStepSound(Block.soundTypeMetal);
 		setBlockName(BlockInfo.BLOCK_MOB_TELEPORTER_UNLOCALIZED_NAME);
-		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_MOB_TELEPORTER_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX
+				+ BlockInfo.BLOCK_MOB_TELEPORTER_UNLOCALIZED_NAME);
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int Integer) {
 		return new TileEntityMobTeleporter();
 	}
-    
-    @Override
-    public void onFallenUpon(World world, int x, int y, int z, Entity entity, float f) {
-    	
-    	TileEntity te;
-        if( entity instanceof EntityLivingBase) {
-        	te = world.getTileEntity(x, y, z);
-        	((TileEntityMobTeleporter)te).teleportEntity(x, y, z, (EntityLivingBase)entity);
-        }
-    }
+
+	@Override
+	public void onFallenUpon(World world, int x, int y, int z, Entity entity,
+			float f) {
+
+		TileEntity te;
+		if (entity instanceof EntityLivingBase) {
+			te = world.getTileEntity(x, y, z);
+			((TileEntityMobTeleporter) te).teleportEntity(x, y, z,
+					(EntityLivingBase) entity);
+		}
+	}
 }

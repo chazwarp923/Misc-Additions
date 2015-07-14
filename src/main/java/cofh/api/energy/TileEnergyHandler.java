@@ -5,7 +5,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Reference implementation of {@link IEnergyHandler}. Use/extend this or implement your own.
+ * Reference implementation of {@link IEnergyHandler}. Use/extend this or
+ * implement your own.
  *
  * @author King Lemming
  *
@@ -37,14 +38,16 @@ public class TileEnergyHandler extends TileEntity implements IEnergyHandler {
 
 	/* IEnergyReceiver */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ForgeDirection from, int maxReceive,
+			boolean simulate) {
 
 		return storage.receiveEnergy(maxReceive, simulate);
 	}
 
 	/* IEnergyProvider */
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(ForgeDirection from, int maxExtract,
+			boolean simulate) {
 
 		return storage.extractEnergy(maxExtract, simulate);
 	}

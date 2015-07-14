@@ -9,20 +9,21 @@ import thaumcraft.api.aspects.AspectList;
 public class DummyInternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
-	public void generateVisEffect(int dim, int x, int y, int z, int x2, int y2,	int z2, int color) {
-		
+	public void generateVisEffect(int dim, int x, int y, int z, int x2, int y2,
+			int z2, int color) {
+
 	}
 
 	@Override
 	public boolean isResearchComplete(String username, String researchkey) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean hasDiscoveredAspect(String username, Aspect aspect) {
 		return false;
 	}
-	
+
 	@Override
 	public AspectList getDiscoveredAspects(String username) {
 		return null;
@@ -66,13 +67,12 @@ public class DummyInternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public void addWarpToPlayer(EntityPlayer player, int amount, boolean temporary) {
+	public void addWarpToPlayer(EntityPlayer player, int amount,
+			boolean temporary) {
 	}
 
 	@Override
 	public void addStickyWarpToPlayer(EntityPlayer player, int amount) {
 	}
 
-	
-	
 }

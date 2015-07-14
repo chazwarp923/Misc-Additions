@@ -1,6 +1,6 @@
 /**
 @author Chaz Kerby
-*/
+ */
 package com.chazwarp.miscadditions.server;
 
 import java.io.BufferedReader;
@@ -24,7 +24,7 @@ public class HomeCommand implements ICommand {
 	private double[] lines = new double[4];
 	private boolean correctSyntax = true;
 	private EntityPlayer player;
-  
+
 	public HomeCommand() {
 		this.aliases = new ArrayList<String>();
 		this.aliases.add("home");
@@ -46,35 +46,35 @@ public class HomeCommand implements ICommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender iCommandSender, String[] stringArray) {
-		if(stringArray.length == 0) {
+	public void processCommand(ICommandSender iCommandSender,
+			String[] stringArray) {
+		if (stringArray.length == 0) {
 			correctSyntax = false;
 		}
-		
-		if(iCommandSender instanceof EntityPlayer) {
-	        player = (EntityPlayer)iCommandSender;
-	        
-		    if(correctSyntax == true){
-	            PLAYER = iCommandSender.getCommandSenderName();	            
-	            HOME_NAME = stringArray[0];
-	           
-	            MinecraftServer minecraftserver = MinecraftServer.getServer();
 
-	            if (minecraftserver != null)
-	            {
-	                read();
-	                player.setPositionAndUpdate(lines[0], lines[1], lines[2]);              
-	            } 
+		if (iCommandSender instanceof EntityPlayer) {
+			player = (EntityPlayer) iCommandSender;
 
-	            player.addChatMessage(new ChatComponentText("Welcome Home"));
-		    }
-		    else if(correctSyntax == false) {
-		    	player.addChatMessage(new ChatComponentText("Incorrect Syntax, Please Specify a Home"));
+			if (correctSyntax == true) {
+				PLAYER = iCommandSender.getCommandSenderName();
+				HOME_NAME = stringArray[0];
+
+				MinecraftServer minecraftserver = MinecraftServer.getServer();
+
+				if (minecraftserver != null) {
+					read();
+					player.setPositionAndUpdate(lines[0], lines[1], lines[2]);
+				}
+
+				player.addChatMessage(new ChatComponentText("Welcome Home"));
+			} else if (correctSyntax == false) {
+				player.addChatMessage(new ChatComponentText(
+						"Incorrect Syntax, Please Specify a Home"));
 			}
+		} else if (!(iCommandSender instanceof EntityPlayer)) {
+			MinecraftServer.getServer().getConfigurationManager()
+					.sendChatMsg(new ChatComponentText("Player Only Command"));
 		}
-		else if(!(iCommandSender instanceof EntityPlayer)) {
-		     MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("Player Only Command"));
-		}      
 	}
 
 	@Override
@@ -84,16 +84,17 @@ public class HomeCommand implements ICommand {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public List addTabCompletionOptions(ICommandSender icommandsender, String[] stringArray) {
+	public List addTabCompletionOptions(ICommandSender icommandsender,
+			String[] stringArray) {
 		PLAYER = icommandsender.getCommandSenderName();
-	  
+
 		File[] fileArray = listFilesForFolder(new File(getSaveFilePath()));
-		List<String> stringArrayList = new ArrayList<String>(); 
-		
-		for(int i=0; i < fileArray.length; i++) {
+		List<String> stringArrayList = new ArrayList<String>();
+
+		for (int i = 0; i < fileArray.length; i++) {
 			stringArrayList.add(fileArray[i].getName());
 		}
-		
+
 		return stringArray.length == 1 ? stringArrayList : null;
 	}
 
@@ -106,32 +107,34 @@ public class HomeCommand implements ICommand {
 	public int compareTo(Object o) {
 		return 0;
 	}
-	  
+
 	public File[] listFilesForFolder(File folder) {
 		return folder.listFiles();
 	}
-	  
-	//From here down is all code originally written by Reika and borrowed from DragonAPI
+
+	// From here down is all code originally written by Reika and borrowed from
+	// DragonAPI
 	// https://github.com/ReikaKalseki/DragonAPI
-	  
+
 	public final String getSaveFilePath() {
 		File save = DimensionManager.getCurrentSaveRootDirectory();
-		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
+		return save.getPath().substring(2) + "\\MiscAdditions\\Homes\\"
+				+ PLAYER + "\\";
 	}
-	  
+
 	public final String getFullSavePath() {
 		return this.getSaveFilePath() + HOME_NAME;
 	}
-	  
+
 	private final void read() {
 		try {
-			BufferedReader p = new BufferedReader(new InputStreamReader(new FileInputStream(this.getFullSavePath())));
-			for(int i=0; i<4; i++){
+			BufferedReader p = new BufferedReader(new InputStreamReader(
+					new FileInputStream(this.getFullSavePath())));
+			for (int i = 0; i < 4; i++) {
 				lines[i] = Double.parseDouble(p.readLine());
 			}
 			p.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

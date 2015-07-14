@@ -1,6 +1,6 @@
 /**
 @author Chaz Kerby
-*/
+ */
 package com.chazwarp.miscadditions.server;
 
 import java.io.File;
@@ -23,116 +23,119 @@ public class SetHomeCommand implements ICommand {
 	private double PLAYER_X;
 	private double PLAYER_Y;
 	private double PLAYER_Z;
-  	private int PLAYER_DIM;
-  	private boolean correctSyntax = true;
-  
-  	public SetHomeCommand() {
-  		this.aliases = new ArrayList<String>();
-  		this.aliases.add("sethome");
-  	}
+	private int PLAYER_DIM;
+	private boolean correctSyntax = true;
 
-  	@Override
-  	public String getCommandName() {
-  		return "sethome";
-  	}
+	public SetHomeCommand() {
+		this.aliases = new ArrayList<String>();
+		this.aliases.add("sethome");
+	}
 
-  	@Override
-  	public String getCommandUsage(ICommandSender icommandsender) {	
-  		return "/sethome [Home Name]";
-  	}
+	@Override
+	public String getCommandName() {
+		return "sethome";
+	}
 
-  	@Override
-  	public List<String> getCommandAliases() {
-  		return this.aliases;
-  	}
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/sethome [Home Name]";
+	}
 
-  	@Override
-  	public void processCommand(ICommandSender icommandsender, String[] stringArray) { 
-	
-  		if(stringArray.length == 0) {
-  			correctSyntax = false;
-  		}
-	
-  		if(icommandsender instanceof EntityPlayer) {
-  			player = (EntityPlayer)icommandsender;
-        
-  			if(correctSyntax == true){
-  				PLAYER = icommandsender.getCommandSenderName(); 
-  				PLAYER_X = player.posX;
-  				PLAYER_Y = player.posY;
-  				PLAYER_Z = player.posZ;
-  				PLAYER_DIM = player.dimension;	
-  				HOME_NAME = stringArray[0];
-            
-  				player.addChatMessage(new ChatComponentText("Home Set"));
-            
-  				try {
-  					save();
-  				} 
-  				catch (Throwable e) {
-  					e.printStackTrace();
-  				}  
-  			}
-  			else if(correctSyntax == false) {
-  				player.addChatMessage(new ChatComponentText("Incorrect Syntax, You Need A Name For The Home"));
-  			}
-  		}
-  		else if(!(icommandsender instanceof EntityPlayer)) {
-  			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("Player Only Command"));
-  		}
-  	}
+	@Override
+	public List<String> getCommandAliases() {
+		return this.aliases;
+	}
 
-  	@Override
-  	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
-  		return true;
-  	}
+	@Override
+	public void processCommand(ICommandSender icommandsender,
+			String[] stringArray) {
 
-  	@Override
-  	public List<?> addTabCompletionOptions(ICommandSender icommandsender, String[] astring) {
-  		return null;
-  	}
+		if (stringArray.length == 0) {
+			correctSyntax = false;
+		}
 
-  	@Override
-  	public boolean isUsernameIndex(String[] astring, int i) {
-  		return false;
-  	}
+		if (icommandsender instanceof EntityPlayer) {
+			player = (EntityPlayer) icommandsender;
 
-  	@Override
-  	public int compareTo(Object o) {
-  		return 0;
-  	}
-  
-  	//From here down is all code originally written by Reika and borrowed from DragonAPI
-  	// https://github.com/ReikaKalseki/DragonAPI
-  
-  	public final String getSaveFilePath() {
-  		File save = DimensionManager.getCurrentSaveRootDirectory();
-		return save.getPath().substring(2)+"\\MiscAdditions\\Homes\\" + PLAYER + "\\";
-  	}
-  
-  	public final String getFullSavePath() {
-  		return this.getSaveFilePath() + HOME_NAME;
-  	}
-  
-  	private final void save() throws Throwable {
-  		File dir = new File(this.getSaveFilePath());
-  		if (!dir.exists()) {
-  			dir.mkdirs();
-  		}
-  		File file = new File(this.getFullSavePath());
-  		if (file.exists()) {
+			if (correctSyntax == true) {
+				PLAYER = icommandsender.getCommandSenderName();
+				PLAYER_X = player.posX;
+				PLAYER_Y = player.posY;
+				PLAYER_Z = player.posZ;
+				PLAYER_DIM = player.dimension;
+				HOME_NAME = stringArray[0];
+
+				player.addChatMessage(new ChatComponentText("Home Set"));
+
+				try {
+					save();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			} else if (correctSyntax == false) {
+				player.addChatMessage(new ChatComponentText(
+						"Incorrect Syntax, You Need A Name For The Home"));
+			}
+		} else if (!(icommandsender instanceof EntityPlayer)) {
+			MinecraftServer.getServer().getConfigurationManager()
+					.sendChatMsg(new ChatComponentText("Player Only Command"));
+		}
+	}
+
+	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
+		return true;
+	}
+
+	@Override
+	public List<?> addTabCompletionOptions(ICommandSender icommandsender,
+			String[] astring) {
+		return null;
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] astring, int i) {
+		return false;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
+	}
+
+	// From here down is all code originally written by Reika and borrowed from
+	// DragonAPI
+	// https://github.com/ReikaKalseki/DragonAPI
+
+	public final String getSaveFilePath() {
+		File save = DimensionManager.getCurrentSaveRootDirectory();
+		return save.getPath().substring(2) + "\\MiscAdditions\\Homes\\"
+				+ PLAYER + "\\";
+	}
+
+	public final String getFullSavePath() {
+		return this.getSaveFilePath() + HOME_NAME;
+	}
+
+	private final void save() throws Throwable {
+		File dir = new File(this.getSaveFilePath());
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		File file = new File(this.getFullSavePath());
+		if (file.exists()) {
 			file.delete();
 		}
 		file.createNewFile();
 		PrintWriter printWriter = new PrintWriter(file);
-			
-			printWriter.append(PLAYER_X + "");
-			printWriter.println();
-			printWriter.append(PLAYER_Y + "");
-			printWriter.println();
-			printWriter.append(PLAYER_Z + "");
-			printWriter.println();
-			printWriter.append(PLAYER_DIM + "");
-			printWriter.close();
-		}
-  }
+
+		printWriter.append(PLAYER_X + "");
+		printWriter.println();
+		printWriter.append(PLAYER_Y + "");
+		printWriter.println();
+		printWriter.append(PLAYER_Z + "");
+		printWriter.println();
+		printWriter.append(PLAYER_DIM + "");
+		printWriter.close();
+	}
+}

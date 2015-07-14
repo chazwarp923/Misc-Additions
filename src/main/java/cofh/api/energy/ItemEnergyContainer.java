@@ -5,7 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Reference implementation of {@link IEnergyContainerItem}. Use/extend this or implement your own.
+ * Reference implementation of {@link IEnergyContainerItem}. Use/extend this or
+ * implement your own.
  * 
  * @author King Lemming
  * 
@@ -61,13 +62,15 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
 	/* IEnergyContainerItem */
 	@Override
-	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ItemStack container, int maxReceive,
+			boolean simulate) {
 
 		if (container.stackTagCompound == null) {
 			container.stackTagCompound = new NBTTagCompound();
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
-		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+		int energyReceived = Math.min(capacity - energy,
+				Math.min(this.maxReceive, maxReceive));
 
 		if (!simulate) {
 			energy += energyReceived;
@@ -77,13 +80,16 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	}
 
 	@Override
-	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+	public int extractEnergy(ItemStack container, int maxExtract,
+			boolean simulate) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
+		if (container.stackTagCompound == null
+				|| !container.stackTagCompound.hasKey("Energy")) {
 			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
-		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+		int energyExtracted = Math.min(energy,
+				Math.min(this.maxExtract, maxExtract));
 
 		if (!simulate) {
 			energy -= energyExtracted;
@@ -95,7 +101,8 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
+		if (container.stackTagCompound == null
+				|| !container.stackTagCompound.hasKey("Energy")) {
 			return 0;
 		}
 		return container.stackTagCompound.getInteger("Energy");

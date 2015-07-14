@@ -1,12 +1,13 @@
 /**
-*@author Chaz Kerby
-*/
+ *@author Chaz Kerby
+ */
 package com.chazwarp.miscadditions.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.BlockFluidClassic;
 
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerPowerInput;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityMaglevPower;
@@ -27,7 +28,7 @@ import com.chazwarp.miscadditions.lib.BlockInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModBlocks {
-	
+
 	public static Block decorative = new BlockMA(Material.wood, 2F, Block.soundTypeWood, BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME, BlockMA.AXE, BlockMA.STONE);
 	public static Block maglevPower = new BlockMaglevPower();
 	public static Block mobTele = new BlockMobTeleporter();
@@ -38,7 +39,7 @@ public class ModBlocks {
 	public static Block fractionationTower = new BlockFractionationTower();
 	public static Block fractionationTowerFluidIO = new BlockFractionationTowerFluidIO();
 	public static Block fractionationTowerPowerInput = new BlockFractionationTowerPowerInput();
-	
+
 	public static void registerBlocks() {
 		GameRegistry.registerBlock(decorative, ItemBlockDecorative.class, BlockInfo.BLOCK_DECORATIVE_KEY);
 		GameRegistry.registerBlock(maglevPower, ItemBlockMaglevPower.class, BlockInfo.BLOCK_MAGLEV_POWER_INPUT_KEY);
@@ -51,10 +52,11 @@ public class ModBlocks {
 		GameRegistry.registerBlock(fractionationTowerFluidIO, ItemBlockFractionationTowerFluidIO.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_KEY);
 		GameRegistry.registerBlock(fractionationTowerPowerInput, ItemBlockFractionationTowerPowerInput.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_KEY);
 	}
-	
+
 	public static void registerTileEntities() {
 		GameRegistry.registerTileEntity(TileEntityMaglevPower.class, BlockInfo.BLOCK_MAGLEV_POWER_INPUT_KEY);
 		GameRegistry.registerTileEntity(TileEntityMobTeleporter.class, BlockInfo.BLOCK_MOB_TELEPORTER_KEY);
+		GameRegistry.registerTileEntity(TileEntityFractionationTower.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_KEY);
 		GameRegistry.registerTileEntity(TileEntityFractionationTowerFluidIO.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_KEY);
 		GameRegistry.registerTileEntity(TileEntityFractionationTowerPowerInput.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_KEY);
 	}

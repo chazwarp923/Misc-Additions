@@ -1,6 +1,6 @@
 /**
-*@author Chaz Kerby
-*/
+ *@author Chaz Kerby
+ */
 package com.chazwarp.miscadditions.blocks.tileentity;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -10,8 +10,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 
-public class TileEntityMobTeleporter extends TileEntity implements IEnergyReceiver {
-	
+public class TileEntityMobTeleporter extends TileEntity implements
+		IEnergyReceiver {
+
 	protected EnergyStorage storage = new EnergyStorage(400000);
 
 	int teleDist;
@@ -27,20 +28,20 @@ public class TileEntityMobTeleporter extends TileEntity implements IEnergyReceiv
 		super.writeToNBT(nbt);
 		storage.writeToNBT(nbt);
 	}
-	
-	//IEnergyReceiver
+
+	// IEnergyReceiver
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
-		if(from != ForgeDirection.UP) {
+		if (from != ForgeDirection.UP) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(ForgeDirection from, int maxReceive,
+			boolean simulate) {
 		return storage.receiveEnergy(maxReceive, simulate);
 	}
 
@@ -53,14 +54,15 @@ public class TileEntityMobTeleporter extends TileEntity implements IEnergyReceiv
 	public int getMaxEnergyStored(ForgeDirection from) {
 		return storage.getMaxEnergyStored();
 	}
-	
-	public void teleportEntity(double x, double y, double z, EntityLivingBase entity) {
-		
-		teleDist = (int)entity.getDistance(x, y, z);
-		
-        if(storage.extractEnergy(teleDist * 10, true) == teleDist * 10) {
-        	entity.setPositionAndUpdate(x+0.5, y + 10, z+0.5);
-            storage.extractEnergy(teleDist * 10, false);
-        }
+
+	public void teleportEntity(double x, double y, double z,
+			EntityLivingBase entity) {
+
+		teleDist = (int) entity.getDistance(x, y, z);
+
+		if (storage.extractEnergy(teleDist * 10, true) == teleDist * 10) {
+			entity.setPositionAndUpdate(x + 0.5, y + 10, z + 0.5);
+			storage.extractEnergy(teleDist * 10, false);
+		}
 	}
 }

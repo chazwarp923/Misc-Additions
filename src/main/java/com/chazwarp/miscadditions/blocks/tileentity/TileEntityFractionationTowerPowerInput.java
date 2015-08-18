@@ -19,14 +19,12 @@ public class TileEntityFractionationTowerPowerInput extends TileEntityFractionat
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		storage.writeToNBT(tag);
-		writeMultiBlockDataToNBT(tag);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		storage = storage.readFromNBT(tag);
-		readMultiBlockDataFromNBT(tag);
 	}
 	
 	@Override
@@ -64,7 +62,10 @@ public class TileEntityFractionationTowerPowerInput extends TileEntityFractionat
 	
 	public void addReferenceToMaster() {
 		TileEntityFractionationTower masterTile = (TileEntityFractionationTower)worldObj.getTileEntity(masterX, masterY, masterZ);
-		masterTile.addPowerLoc(this.xCoord, this.yCoord, this.zCoord);
+		masterTile.powerInputX = this.xCoord;
+		masterTile.powerInputX = this.yCoord;
+		masterTile.powerInputX = this.zCoord;
+		masterTile.markDirty();
 	}
 
 	/** IEnergyReceiver */

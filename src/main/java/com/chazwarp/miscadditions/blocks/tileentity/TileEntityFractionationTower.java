@@ -15,18 +15,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileEntityFractionationTower extends TileEntity implements IDebuggable{
-	
-	int gasolineTankX = 0, gasolineTankY = 0, gasolineTankZ = 0;
-	int dieselTankX = 0, dieselTankY = 0, dieselTankZ = 0;
-	int liquifiedPetroleumGasTankX = 0, liquifiedPetroleumGasTankY = 0, liquifiedPetroleumGasTankZ = 0;
-	int keroseneTankX = 0, keroseneTankY = 0, keroseneTankZ = 0;	
-	int powerInputX = 0, powerInputY = 0, powerInputZ = 0;
-	
+public class TileEntityFractionationTower extends TileEntity implements IDebuggable {
 	
 	public boolean isMasterBlock = false;
 	public boolean hasMasterBlock = false;
 	public int masterX = 0, masterY = 0, masterZ = 0;
+	
+	protected int gasolineTankX = 0, gasolineTankY = 0, gasolineTankZ = 0;
+	protected int dieselTankX = 0, dieselTankY = 0, dieselTankZ = 0;
+	protected int liquifiedPetroleumGasTankX = 0, liquifiedPetroleumGasTankY = 0, liquifiedPetroleumGasTankZ = 0;
+	protected int keroseneTankX = 0, keroseneTankY = 0, keroseneTankZ = 0;	
+	protected int powerInputX = 0, powerInputY = 0, powerInputZ = 0;
 	
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
@@ -42,60 +41,66 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 	
 	public void writeMultiBlockDataToNBT(NBTTagCompound nbt) {
 		NBTTagCompound multiblockCompound = nbt.getCompoundTag("MultiBlockData");
-		multiblockCompound.setBoolean("isMasterBlock", isMasterBlock);
-		multiblockCompound.setBoolean("hasMasterBlock", hasMasterBlock);
-		multiblockCompound.setInteger("masterX", masterX);
-		multiblockCompound.setInteger("masterY", masterY);
-		multiblockCompound.setInteger("masterZ", masterZ);
-		NBTTagCompound locCompound = nbt.getCompoundTag("LocationData");
-		locCompound.setInteger("GasolineTankX", gasolineTankX);
-		locCompound.setInteger("GasolineTankY", gasolineTankY);
-		locCompound.setInteger("GasolineTankZ", gasolineTankZ);
-		locCompound.setInteger("DieselTankX", dieselTankX);
-		locCompound.setInteger("DieselTankY", dieselTankY);
-		locCompound.setInteger("DieselTankZ", dieselTankZ);
-		locCompound.setInteger("LiquifiedPetroleumGasX", liquifiedPetroleumGasTankX);
-		locCompound.setInteger("LiquifiedPetroleumGasY", liquifiedPetroleumGasTankY);
-		locCompound.setInteger("LiquifiedPetroleumGasZ", liquifiedPetroleumGasTankZ);
-		locCompound.setInteger("KeroseneTankX", keroseneTankX);
-		locCompound.setInteger("KeroseneTankY", keroseneTankY);
-		locCompound.setInteger("KeroseneTankZ", keroseneTankZ);
-		locCompound.setInteger("PowerInputX", powerInputX);
-		locCompound.setInteger("PowerInputY", powerInputY);
-		locCompound.setInteger("PowerInputZ", powerInputZ);
-		multiblockCompound.setTag("LocationData", locCompound);
+			multiblockCompound.setBoolean("isMasterBlock", isMasterBlock);
+			multiblockCompound.setBoolean("hasMasterBlock", hasMasterBlock);
+			multiblockCompound.setInteger("masterX", masterX);
+			multiblockCompound.setInteger("masterY", masterY);
+			multiblockCompound.setInteger("masterZ", masterZ);
+			NBTTagCompound locCompound = nbt.getCompoundTag("LocationData");
+				locCompound.setInteger("GasolineTankX", gasolineTankX);
+				locCompound.setInteger("GasolineTankY", gasolineTankY);
+				locCompound.setInteger("GasolineTankZ", gasolineTankZ);
+				locCompound.setInteger("DieselTankX", dieselTankX);
+				locCompound.setInteger("DieselTankY", dieselTankY);
+				locCompound.setInteger("DieselTankZ", dieselTankZ);
+				locCompound.setInteger("LiquifiedPetroleumGasX", liquifiedPetroleumGasTankX);
+				locCompound.setInteger("LiquifiedPetroleumGasY", liquifiedPetroleumGasTankY);
+				locCompound.setInteger("LiquifiedPetroleumGasZ", liquifiedPetroleumGasTankZ);
+				locCompound.setInteger("KeroseneTankX", keroseneTankX);
+				locCompound.setInteger("KeroseneTankY", keroseneTankY);
+				locCompound.setInteger("KeroseneTankZ", keroseneTankZ);
+				locCompound.setInteger("PowerInputX", powerInputX);
+				locCompound.setInteger("PowerInputY", powerInputY);
+				locCompound.setInteger("PowerInputZ", powerInputZ);
+			multiblockCompound.setTag("LocationData", locCompound);
 		nbt.setTag("MultiBlockData", multiblockCompound);
 	}
 	
 	public void readMultiBlockDataFromNBT(NBTTagCompound nbt) {
 		NBTTagCompound multiblockCompound = nbt.getCompoundTag("MultiBlockData");
-		isMasterBlock = multiblockCompound.getBoolean("isMasterBlock");
-		hasMasterBlock = multiblockCompound.getBoolean("hasMasterBlock");
-		masterX = multiblockCompound.getInteger("masterX");
-		masterY = multiblockCompound.getInteger("masterY");
-		masterZ = multiblockCompound.getInteger("masterZ");
-		NBTTagCompound locCompound = nbt.getCompoundTag("LocationData");
-		gasolineTankX = locCompound.getInteger("GasolineTankX");
-		gasolineTankY = locCompound.getInteger("GasolineTankY");
-		gasolineTankZ = locCompound.getInteger("GasolineTankZ");
-		dieselTankX = locCompound.getInteger("DieselTankX");
-		dieselTankY = locCompound.getInteger("DieselTankY");
-		dieselTankZ = locCompound.getInteger("DieselTankZ");
-		liquifiedPetroleumGasTankX = locCompound.getInteger("LiquifiedPetroleumGasX");
-		liquifiedPetroleumGasTankY = locCompound.getInteger("LiquifiedPetroleumGasY");
-		liquifiedPetroleumGasTankZ = locCompound.getInteger("LiquifiedPetroleumGasZ");
-		keroseneTankX = locCompound.getInteger("KeroseneTankX");
-		keroseneTankY = locCompound.getInteger("KeroseneTankY");
-		keroseneTankZ = locCompound.getInteger("KeroseneTankZ");
-		powerInputX = locCompound.getInteger("PowerInputX");
-		powerInputY = locCompound.getInteger("PowerInputY");
-		powerInputZ = locCompound.getInteger("PowerInputZ");
+			isMasterBlock = multiblockCompound.getBoolean("isMasterBlock");
+			hasMasterBlock = multiblockCompound.getBoolean("hasMasterBlock");
+			masterX = multiblockCompound.getInteger("masterX");
+			masterY = multiblockCompound.getInteger("masterY");
+			masterZ = multiblockCompound.getInteger("masterZ");
+			NBTTagCompound locCompound = nbt.getCompoundTag("LocationData");
+				gasolineTankX = locCompound.getInteger("GasolineTankX");
+				gasolineTankY = locCompound.getInteger("GasolineTankY");
+				gasolineTankZ = locCompound.getInteger("GasolineTankZ");
+				dieselTankX = locCompound.getInteger("DieselTankX");
+				dieselTankY = locCompound.getInteger("DieselTankY");
+				dieselTankZ = locCompound.getInteger("DieselTankZ");
+				liquifiedPetroleumGasTankX = locCompound.getInteger("LiquifiedPetroleumGasX");
+				liquifiedPetroleumGasTankY = locCompound.getInteger("LiquifiedPetroleumGasY");
+				liquifiedPetroleumGasTankZ = locCompound.getInteger("LiquifiedPetroleumGasZ");
+				keroseneTankX = locCompound.getInteger("KeroseneTankX");
+				keroseneTankY = locCompound.getInteger("KeroseneTankY");
+				keroseneTankZ = locCompound.getInteger("KeroseneTankZ");
+				powerInputX = locCompound.getInteger("PowerInputX");
+				powerInputY = locCompound.getInteger("PowerInputY");
+				powerInputZ = locCompound.getInteger("PowerInputZ");
 	}
 	
 	private void sendUpdatesToServer() {
 		NBTTagCompound compound = new NBTTagCompound();
 		writeToNBT(compound);
 		MiscAdditions.network.sendToServer(new SyncFractionationTowerPacket000(compound, this.xCoord, this.yCoord, this.zCoord));
+	}
+	
+	protected void sendUpdatesToServer(int x, int y, int z) {
+		NBTTagCompound compound = new NBTTagCompound();
+		writeToNBT(compound);
+		MiscAdditions.network.sendToServer(new SyncFractionationTowerPacket000(compound, x, y, z));
 	}
 	
 	@Override
@@ -113,11 +118,11 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 		debugInfo[2] = Integer.toString(this.masterX);
 		debugInfo[3] = Integer.toString(this.masterY);
 		debugInfo[4] = Integer.toString(this.masterZ);
-		debugInfo[5] = gasolineTankX + "_" + gasolineTankY + "_" + gasolineTankZ;
-		debugInfo[6] = dieselTankX + "_" + dieselTankY + "_" + dieselTankZ;
-		debugInfo[7] = liquifiedPetroleumGasTankX + "_" + liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
-		debugInfo[8] = keroseneTankX + "_" + keroseneTankY + "_" + keroseneTankZ;
-		debugInfo[9] = powerInputX + "_" + powerInputY + "_" + powerInputZ;
+		debugInfo[5] = this.gasolineTankX + "_" + this.gasolineTankY + "_" + this.gasolineTankZ;
+		debugInfo[6] = this.dieselTankX + "_" + this.dieselTankY + "_" + this.dieselTankZ;
+		debugInfo[7] = this.liquifiedPetroleumGasTankX + "_" + this.liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
+		debugInfo[8] = this.keroseneTankX + "_" + this.keroseneTankY + "_" + this.keroseneTankZ;
+		debugInfo[9] = this.powerInputX + "_" + this.powerInputY + "_" + this.powerInputZ;
 		return debugInfo;
 	}
 	
@@ -216,41 +221,11 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 					if(tile != null && (tile instanceof TileEntityFractionationTower)) {
 						((TileEntityFractionationTower)tile).setHasMasterBlock(xCoord, yCoord, zCoord);
 						((TileEntityFractionationTower)tile).sendUpdatesToServer();
+						((TileEntityFractionationTower)tile).markDirty();
 					}
 				}
 			}
 		}
-	}
-	
-	public void addTankLoc(int x, int y, int z, int type) {
-		switch(type) {
-			case 1:
-				gasolineTankX = x;
-				gasolineTankY = y;
-				gasolineTankZ = z;
-				break;
-			case 2:
-				dieselTankX = x;
-				dieselTankY = y;
-				dieselTankZ = z;
-				break;
-			case 3:
-				liquifiedPetroleumGasTankX = x;
-				liquifiedPetroleumGasTankY = y;
-				liquifiedPetroleumGasTankZ = z;
-				break;
-			case 4:
-				keroseneTankX = x;
-				keroseneTankY = y;
-				keroseneTankZ = z;
-				break;
-		}
-	}
-	
-	public void addPowerLoc(int x, int y, int z) {
-		powerInputX = x;
-		powerInputY = y;
-		powerInputZ = z;
 	}
 	
 	public boolean checkForMaster() {
@@ -264,11 +239,12 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 		masterZ = 0;
 		hasMasterBlock = false;
 		isMasterBlock = false;
+		this.markDirty();
 	}
 	
 	public void resetStructure() {
 		for(int x = xCoord-2; x < xCoord+2; x++) {
-			for(int y = yCoord-5; y < yCoord+5; y++) {
+			for(int y = yCoord; y < yCoord+5; y++) {
 				for(int z = zCoord-2; z < zCoord+2; z++) {
 					TileEntity tile = worldObj.getTileEntity(x, y, z);
 					if(tile != null && tile instanceof TileEntityFractionationTower) {

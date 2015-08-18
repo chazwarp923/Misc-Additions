@@ -34,16 +34,7 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 	protected FluidTankMA liquifiedPetroleumGasTank = new FluidTankMA(liquifiedPetroleumGas, FluidContainerRegistry.BUCKET_VOLUME * 2, "LiquifiedPetroleumGasTank");
 	protected FluidTankMA keroseneTank = new FluidTankMA(kerosene, FluidContainerRegistry.BUCKET_VOLUME * 2, "KeroseneTank");
 
-	private int mode = 0;
-	
-	public enum EnumModes {
-		OIL(0), GASOLINE(1), DIESEL(2), LIQUIFIED_PETROLEUM_GAS(3), KEROSENE(4);
-		private int value;
-		
-		private EnumModes(int value) {
-			this.value = value;
-		}
-	}
+	protected int mode = 0;
 
 	public TileEntityFractionationTowerFluidIO() {
 		if (Loader.isModLoaded("BuildCraft|Energy")) {
@@ -60,8 +51,7 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 		dieselTank.writeToNBT(tag);
 		liquifiedPetroleumGasTank.writeToNBT(tag);
 		keroseneTank.writeToNBT(tag);
-		tag.setInteger("mode", mode);
-		writeMultiBlockDataToNBT(tag);
+		tag.setInteger("Mode", this.mode);
 	}
 
 	@Override
@@ -73,8 +63,7 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 		dieselTank = dieselTank.readFromNBT(tag);
 		liquifiedPetroleumGasTank = liquifiedPetroleumGasTank.readFromNBT(tag);
 		keroseneTank = keroseneTank.readFromNBT(tag);
-		this.mode = tag.getInteger("mode");
-		readMultiBlockDataFromNBT(tag);
+		this.mode = tag.getInteger("Mode");
 	}
 	
 	@Override
@@ -92,11 +81,11 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 		debugInfo[2] = Integer.toString(this.masterX);
 		debugInfo[3] = Integer.toString(this.masterY);
 		debugInfo[4] = Integer.toString(this.masterZ);
-		debugInfo[5] = gasolineTankX + "_" + gasolineTankY + "_" + gasolineTankZ;
-		debugInfo[6] = dieselTankX + "_" + dieselTankY + "_" + dieselTankZ;
-		debugInfo[7] = liquifiedPetroleumGasTankX + "_" + liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
-		debugInfo[8] = keroseneTankX + "_" + keroseneTankY + "_" + keroseneTankZ;
-		debugInfo[9] = powerInputX + "_" + powerInputY + "_" + powerInputZ;
+		debugInfo[5] = this.gasolineTankX + "_" + this.gasolineTankY + "_" + this.gasolineTankZ;
+		debugInfo[6] = this.dieselTankX + "_" + this.dieselTankY + "_" + this.dieselTankZ;
+		debugInfo[7] = this.liquifiedPetroleumGasTankX + "_" + this.liquifiedPetroleumGasTankY + "_" + this.liquifiedPetroleumGasTankZ;
+		debugInfo[8] = this.keroseneTankX + "_" + this.keroseneTankY + "_" + this.keroseneTankZ;
+		debugInfo[9] = this.powerInputX + "_" + this.powerInputY + "_" + this.powerInputZ;
 		debugInfo[10] = Integer.toString(oilTank.getFluidAmount());
 		debugInfo[11] = Integer.toString(gasolineTank.getFluidAmount());
 		debugInfo[12] = Integer.toString(dieselTank.getFluidAmount());
@@ -120,40 +109,68 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 	}
 
 	public void cycleMode() {
-		if(this.mode == EnumModes.OIL.value) {
+		switch(this.mode) {
+		case 0:
 			this.mode = 1;
-		}
-		else if(this.mode == EnumModes.GASOLINE.value) {
+			this.markDirty();
+			break;
+		case 1:
 			this.mode = 2;
-		}
-		else if(this.mode == EnumModes.DIESEL.value) {
+			this.markDirty();
+			break;
+		case 2:
 			this.mode = 3;
-		}
-		else if(this.mode == EnumModes.LIQUIFIED_PETROLEUM_GAS.value) {
+			this.markDirty();
+			break;
+		case 3:
 			this.mode = 4;
-		}
-		else if(this.mode == EnumModes.KEROSENE.value) {
+			this.markDirty();
+			break;
+		case 4:
 			this.mode = 0;
+			this.markDirty();
+			break;
+		default:
+			System.out.println("Something done fucked up");
 		}
 	}
 	
 	public void addReferenceToMaster() {
-		TileEntityFractionationTower masterTile = (TileEntityFractionationTower)worldObj.getTileEntity(masterX, masterY, masterZ);
+		TileEntityFractionationTower masterTile = (TileEntityFractionationTower)worldObj.getTileEntity(this.masterX, this.masterY, this.masterZ);
 		
 		switch(this.mode) {
-		case 1:
-			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.GASOLINE.value);
-			System.out.println(this.xCoord + "_" + this.yCoord + "_" + this.zCoord);
-			break;
-		case 2:
-			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.DIESEL.value);
-			break;
-		case 3:
-			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.LIQUIFIED_PETROLEUM_GAS.value);
-			break;
-		case 4:
-			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.KEROSENE.value);
-			break;
+			case 0:
+				break;	
+			case 1:
+				masterTile.gasolineTankX = this.xCoord;
+				masterTile.gasolineTankX = this.yCoord;
+				masterTile.gasolineTankX = this.zCoord;
+				masterTile.markDirty();
+				sendUpdatesToServer(masterX, masterY, masterZ);
+				break;
+			case 2:
+				masterTile.dieselTankX = this.xCoord;
+				masterTile.dieselTankX = this.yCoord;
+				masterTile.dieselTankX = this.zCoord;
+				masterTile.markDirty();
+				sendUpdatesToServer(masterX, masterY, masterZ);
+				break;
+			case 3:
+				masterTile.liquifiedPetroleumGasTankX = this.xCoord;
+				masterTile.liquifiedPetroleumGasTankY = this.yCoord;
+				masterTile.liquifiedPetroleumGasTankZ = this.zCoord;
+				masterTile.markDirty();
+				sendUpdatesToServer(masterX, masterY, masterZ);
+				break;
+			case 4:
+				masterTile.keroseneTankX = this.xCoord;
+				masterTile.keroseneTankY = this.yCoord;
+				masterTile.keroseneTankZ = this.zCoord;
+				masterTile.markDirty();
+				sendUpdatesToServer(masterX, masterY, masterZ);
+				break;
+			default:
+				System.out.println("Something done fucked up");
 		}
 	}
 

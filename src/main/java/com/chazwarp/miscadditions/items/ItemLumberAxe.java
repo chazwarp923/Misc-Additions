@@ -40,11 +40,9 @@ public class ItemLumberAxe extends ItemAxe {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		if (ETM == ToolMaterial.IRON)
-			this.itemIcon = iconRegister.registerIcon(Reference.TEXTURE_LOC
-					+ ":" + "iron" + ItemInfo.LUMBER_AXE_UNLOCALIZED_NAME);
+			this.itemIcon = iconRegister.registerIcon(Reference.RESOURCE_PREFIX + "iron" + ItemInfo.LUMBER_AXE_UNLOCALIZED_NAME);
 		else
-			this.itemIcon = iconRegister.registerIcon(Reference.TEXTURE_LOC
-					+ ":" + "diamond" + ItemInfo.LUMBER_AXE_UNLOCALIZED_NAME);
+			this.itemIcon = iconRegister.registerIcon(Reference.RESOURCE_PREFIX + "diamond" + ItemInfo.LUMBER_AXE_UNLOCALIZED_NAME);
 	}
 
 	@Override

@@ -39,8 +39,7 @@ public class BlockDecorative extends Block {
 		setHardness(2F);
 		setStepSound(Block.soundTypeWood);
 		setBlockName(BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME);
-		setBlockTextureName(Reference.RESOURCE_PREFIX
-				+ BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME);
+		setBlockTextureName(Reference.RESOURCE_PREFIX + BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME);
 	}
 
 	@Override

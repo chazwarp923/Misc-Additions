@@ -6,14 +6,7 @@
  * Please check the contents of the license, which should be located
  * as "LICENSE.API" in the BuildCraft source code distribution.
  */
-package buildcraft.api.robots;
+@API(apiVersion = "2.0", owner = "BuildCraftAPI|core", provides = "BuildCraftAPI|library")
+package buildcraft.api.library;
+import cpw.mods.fml.common.API;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-
-public class StackRequest {
-	public ItemStack stack;
-	public int index;
-	public TileEntity requester;
-	public IDockingStation station;
-}

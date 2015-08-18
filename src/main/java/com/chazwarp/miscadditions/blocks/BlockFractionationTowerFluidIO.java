@@ -4,6 +4,16 @@
 
 package com.chazwarp.miscadditions.blocks;
 
+import com.chazwarp.miscadditions.MiscTab;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
+import com.chazwarp.miscadditions.items.ModItems;
+import com.chazwarp.miscadditions.lib.BlockInfo;
+import com.chazwarp.miscadditions.lib.Reference;
+
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -14,16 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import buildcraft.api.tools.IToolWrench;
-
-import com.chazwarp.miscadditions.MiscTab;
-import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
-import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
-import com.chazwarp.miscadditions.lib.BlockInfo;
-import com.chazwarp.miscadditions.lib.Reference;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFractionationTowerFluidIO extends BlockContainer {
 
@@ -58,8 +58,7 @@ public class BlockFractionationTowerFluidIO extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-		TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO) world
-				.getTileEntity(x, y, z);
+		TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO) world.getTileEntity(x, y, z);
 
 		switch (te.getMode()) {
 		case 0:
@@ -98,7 +97,14 @@ public class BlockFractionationTowerFluidIO extends BlockContainer {
 			}
 			return true;
 		}
-		
+		else if(equipped.equals(ModItems.debugItem)) {
+			TileEntityFractionationTowerFluidIO te = (TileEntityFractionationTowerFluidIO)world.getTileEntity(x, y, z);
+			String[] debugStats = te.getDebugStatus();
+			for(int i=0; i < debugStats.length; i++) {
+				System.out.println(debugStats[i]);
+			}
+			return true;
+		}
 		else {
 			return false;
 		}

@@ -17,8 +17,11 @@ public class AIRobot {
 	private AIRobot delegateAI;
 	private AIRobot parentAI;
 
+	private boolean success;
+
 	public AIRobot(EntityRobotBase iRobot) {
 		robot = iRobot;
+		success = true;
 	}
 
 	public void start() {
@@ -40,10 +43,18 @@ public class AIRobot {
 
 	}
 
+	/**
+	 * This gets called when a delegate AI ends work naturally.
+	 * @param ai The delegate AI which ended work.
+	 */
 	public void delegateAIEnded(AIRobot ai) {
 
 	}
 
+	/**
+	 * This gets called when a delegate AI is forcibly aborted.
+	 * @param ai The delegate AI which was aborted.
+	 */
 	public void delegateAIAborted(AIRobot ai) {
 
 	}
@@ -57,7 +68,11 @@ public class AIRobot {
 	}
 
 	public boolean success() {
-		return true;
+		return success;
+	}
+
+	protected void setSuccess(boolean iSuccess) {
+		success = iSuccess;
 	}
 
 	public int getEnergyCost() {
@@ -169,19 +184,21 @@ public class AIRobot {
 			NBTTagCompound sub = nbt.getCompoundTag("delegateAI");
 
 			try {
-				Class<?> aiRobotClass = null;
+				Class<?> aiRobotClass;
 				if (sub.hasKey("class")) {
 					// Migration support for 6.4.x
 					aiRobotClass = RobotManager.getAIRobotByLegacyClassName(sub.getString("class"));
 				} else {
 					aiRobotClass = RobotManager.getAIRobotByName(sub.getString("aiName"));
 				}
-				delegateAI = (AIRobot) aiRobotClass.getConstructor(EntityRobotBase.class)
-						.newInstance(robot);
-
-				if (delegateAI.canLoadFromNBT()) {
+				if (aiRobotClass != null) {
+					delegateAI = (AIRobot) aiRobotClass.getConstructor(EntityRobotBase.class)
+							.newInstance(robot);
 					delegateAI.parentAI = this;
-					delegateAI.loadFromNBT(sub);
+
+					if (delegateAI.canLoadFromNBT()) {
+						delegateAI.loadFromNBT(sub);
+					}
 				}
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -193,16 +210,18 @@ public class AIRobot {
 		AIRobot ai = null;
 
 		try {
-			Class<?> aiRobotClass = null;
+			Class<?> aiRobotClass;
 			if (nbt.hasKey("class")) {
 				// Migration support for 6.4.x
 				aiRobotClass = RobotManager.getAIRobotByLegacyClassName(nbt.getString("class"));
 			} else {
 				aiRobotClass = RobotManager.getAIRobotByName(nbt.getString("aiName"));
 			}
-			ai = (AIRobot) aiRobotClass.getConstructor(EntityRobotBase.class)
-					.newInstance(robot);
-			ai.loadFromNBT(nbt);
+			if (aiRobotClass != null) {
+				ai = (AIRobot) aiRobotClass.getConstructor(EntityRobotBase.class)
+						.newInstance(robot);
+				ai.loadFromNBT(nbt);
+			}
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

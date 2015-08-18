@@ -40,4 +40,12 @@ public class BlockInfo {
 	public static final String BLOCK_FRACTIONATION_TOWER_POWER_INPUT_UNLOCALIZED_NAME = "fractionationTowerPowerInput";
 	public static final String BLOCK_FRACTIONATION_TOWER_FLUID_IO_KEY = "Fractionation Tower Fluid IO";
 	public static final String BLOCK_FRACTIONATION_TOWER_FLUID_IO_UNLOCALIZED_NAME = "fractionationTowerFluidIO";
+	
+	// This is all the information for the Present
+	public static final String BLOCK_PRESENT_KEY = "Present";
+	public static final String BLOCK_PRESENT_UNLOCALIZED_NAME = "present";
+	
+	// This is all the information for the Hopping Buffer
+	public static final String BLOCK_HOPPING_BUFFER_KEY = "Hopping Buffer";
+	public static final String BLOCK_HOPPING_BUFFER_UNLOCALIZED_NAME = "hoppingBuffer";
 }

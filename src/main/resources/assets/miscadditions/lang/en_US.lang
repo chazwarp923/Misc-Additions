@@ -15,5 +15,7 @@ tile.kerosene.name=Kerosene
 tile.fractionationTower.name=Fractionation Tower Block
 tile.fractionationTowerPowerInput.name=Fractionation Tower Power Input
 tile.fractionationTowerFluidIO.name=Fractionation Tower Fluid IO
+tile.hoppingBuffer.name=Hopping Buffer
+tile.present.name=Present
 
 item.axeLumber.name=Lumber Axe

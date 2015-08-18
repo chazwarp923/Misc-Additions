@@ -10,8 +10,10 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerPowerInput;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityHoppingBuffer;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityMaglevPower;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityMobTeleporter;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityPresent;
 import com.chazwarp.miscadditions.fluid.Fluids;
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockDecorative;
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockFluidDiesel;
@@ -21,8 +23,10 @@ import com.chazwarp.miscadditions.items.itemblocks.ItemBlockFluidLiquifiedPetrol
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockFractionationTower;
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockFractionationTowerFluidIO;
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockFractionationTowerPowerInput;
+import com.chazwarp.miscadditions.items.itemblocks.ItemBlockHoppingBuffer;
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockMaglevPower;
 import com.chazwarp.miscadditions.items.itemblocks.ItemBlockMobTeleporter;
+import com.chazwarp.miscadditions.items.itemblocks.ItemBlockPresent;
 import com.chazwarp.miscadditions.lib.BlockInfo;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -39,6 +43,8 @@ public class ModBlocks {
 	public static Block fractionationTower = new BlockFractionationTower();
 	public static Block fractionationTowerFluidIO = new BlockFractionationTowerFluidIO();
 	public static Block fractionationTowerPowerInput = new BlockFractionationTowerPowerInput();
+	public static Block hoppingBuffer = new BlockHoppingBuffer();
+	public static Block present = new BlockPresent();
 
 	public static void registerBlocks() {
 		GameRegistry.registerBlock(decorative, ItemBlockDecorative.class, BlockInfo.BLOCK_DECORATIVE_KEY);
@@ -51,6 +57,8 @@ public class ModBlocks {
 		GameRegistry.registerBlock(fractionationTower, ItemBlockFractionationTower.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_KEY);
 		GameRegistry.registerBlock(fractionationTowerFluidIO, ItemBlockFractionationTowerFluidIO.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_KEY);
 		GameRegistry.registerBlock(fractionationTowerPowerInput, ItemBlockFractionationTowerPowerInput.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_KEY);
+		GameRegistry.registerBlock(hoppingBuffer, ItemBlockHoppingBuffer.class, BlockInfo.BLOCK_HOPPING_BUFFER_KEY);
+		GameRegistry.registerBlock(present, ItemBlockPresent.class, BlockInfo.BLOCK_PRESENT_KEY);
 	}
 
 	public static void registerTileEntities() {
@@ -59,5 +67,7 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileEntityFractionationTower.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_KEY);
 		GameRegistry.registerTileEntity(TileEntityFractionationTowerFluidIO.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_KEY);
 		GameRegistry.registerTileEntity(TileEntityFractionationTowerPowerInput.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_KEY);
+		GameRegistry.registerTileEntity(TileEntityHoppingBuffer.class, BlockInfo.BLOCK_HOPPING_BUFFER_KEY);
+		GameRegistry.registerTileEntity(TileEntityPresent.class, BlockInfo.BLOCK_PRESENT_KEY);
 	}
 }

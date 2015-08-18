@@ -38,10 +38,11 @@ public abstract class Schematic {
 	 * Blocks are build in various stages, in order to make sure that a block
 	 * can indeed be placed, and that it's unlikely to disturb other blocks.
 	 */
-	public static enum BuildingStage {
+	public enum BuildingStage {
 		/**
 		 * Standalone blocks can be placed in the air, and they don't change
-		 * once placed.
+		 * once placed. This category also includes blocks which fall but can
+		 * support other blocks.
 		 */
 		STANDALONE,
 
@@ -153,6 +154,18 @@ public abstract class Schematic {
 	 */
 	public void initializeFromObjectAt(IBuilderContext context, int x, int y, int z) {
 
+	}
+
+	/**
+	 * Can the block be placed in the world at these coordinates now?
+	 * This function is only used to *delay* block placement until other
+	 * prerequisites are met.
+	 *
+	 * This should probably be used sparingly, in cases where the BuildStage
+	 * distinction is not enough.
+	 */
+	public boolean canPlaceInWorld(IBuilderContext context, int x, int y, int z) {
+		return true;
 	}
 
 	/**

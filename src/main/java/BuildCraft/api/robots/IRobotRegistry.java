@@ -11,7 +11,6 @@ package buildcraft.api.robots;
 import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IRobotRegistry {
@@ -40,19 +39,21 @@ public interface IRobotRegistry {
 
 	void releaseResources(EntityRobotBase robot);
 
-	IDockingStation getStation(int x, int y, int z, ForgeDirection side);
+	DockingStation getStation(int x, int y, int z, ForgeDirection side);
 
-	Collection<IDockingStation> getStations();
+	Collection<DockingStation> getStations();
 
-	void registerStation(IDockingStation station);
+	void registerStation(DockingStation station);
 
-	void removeStation(IDockingStation station);
+	void removeStation(DockingStation station);
 
-	void take(IDockingStation station, long robotId);
+	void take(DockingStation station, long robotId);
 
-	void release(IDockingStation station, long robotId);
+	void release(DockingStation station, long robotId);
 
 	void writeToNBT(NBTTagCompound nbt);
 
 	void readFromNBT(NBTTagCompound nbt);
+
+	void registryMarkDirty();
 }

@@ -4,6 +4,12 @@
 
 package com.chazwarp.miscadditions.blocks;
 
+import com.chazwarp.miscadditions.MiscTab;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
+import com.chazwarp.miscadditions.items.ModItems;
+import com.chazwarp.miscadditions.lib.BlockInfo;
+import com.chazwarp.miscadditions.lib.Reference;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -11,11 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import com.chazwarp.miscadditions.MiscTab;
-import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
-import com.chazwarp.miscadditions.lib.BlockInfo;
-import com.chazwarp.miscadditions.lib.Reference;
 
 public class BlockFractionationTower extends BlockContainer {
 
@@ -29,7 +30,7 @@ public class BlockFractionationTower extends BlockContainer {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world, int Integer) {
+	public TileEntity createNewTileEntity(World world, int integer) {
 		return new TileEntityFractionationTower();
 	}
 	
@@ -42,11 +43,21 @@ public class BlockFractionationTower extends BlockContainer {
 				TileEntityFractionationTower tile = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
 				if(tile.hasBlocksAround(x, y, z)) {
 					tile.setIsMasterBlock();
-					System.out.println("Setup Fractionation Tower MultiBlock");
+					if(!tile.getWorldObj().isRemote) {
+						System.out.println("Setup Fractionation Tower MultiBlock");
+					}
 				}
 			}
 			return true;
-		} 
+		}
+		else if(equipped.getItem().equals(ModItems.debugItem)) {
+			TileEntityFractionationTower te = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
+			String[] debugStats = te.getDebugStatus();
+			for(int i=0; i < debugStats.length; i++) {
+				System.out.println(debugStats[i]);
+			}
+			return true;
+		}
 		else {
 			return false;
 		}

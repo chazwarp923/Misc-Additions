@@ -16,11 +16,11 @@ import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraftforge.common.util.ForgeDirection;
+
+import buildcraft.api.core.BCLog;
 
 public final class StatementManager {
 
@@ -161,6 +161,9 @@ public final class StatementManager {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
+		} catch (Error error) {
+			BCLog.logErrorAPI(error, IStatementParameter.class);
+			throw error;
 		}
 
 		return null;

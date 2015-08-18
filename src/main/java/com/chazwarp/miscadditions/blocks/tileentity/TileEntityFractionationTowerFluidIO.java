@@ -5,6 +5,8 @@
 package com.chazwarp.miscadditions.blocks.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -71,55 +73,87 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 		dieselTank = dieselTank.readFromNBT(tag);
 		liquifiedPetroleumGasTank = liquifiedPetroleumGasTank.readFromNBT(tag);
 		keroseneTank = keroseneTank.readFromNBT(tag);
-		mode = tag.getInteger("mode");
+		this.mode = tag.getInteger("mode");
 		readMultiBlockDataFromNBT(tag);
+	}
+	
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		writeToNBT(tagCompound);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tagCompound);
+	}
+	
+	@Override
+	public String[] getDebugStatus() {
+		String[] debugInfo = new String[16];
+		debugInfo[0] = Boolean.toString(this.isMasterBlock);
+		debugInfo[1] = Boolean.toString(this.hasMasterBlock);
+		debugInfo[2] = Integer.toString(this.masterX);
+		debugInfo[3] = Integer.toString(this.masterY);
+		debugInfo[4] = Integer.toString(this.masterZ);
+		debugInfo[5] = gasolineTankX + "_" + gasolineTankY + "_" + gasolineTankZ;
+		debugInfo[6] = dieselTankX + "_" + dieselTankY + "_" + dieselTankZ;
+		debugInfo[7] = liquifiedPetroleumGasTankX + "_" + liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
+		debugInfo[8] = keroseneTankX + "_" + keroseneTankY + "_" + keroseneTankZ;
+		debugInfo[9] = powerInputX + "_" + powerInputY + "_" + powerInputZ;
+		debugInfo[10] = Integer.toString(oilTank.getFluidAmount());
+		debugInfo[11] = Integer.toString(gasolineTank.getFluidAmount());
+		debugInfo[12] = Integer.toString(dieselTank.getFluidAmount());
+		debugInfo[13] = Integer.toString(liquifiedPetroleumGasTank.getFluidAmount());
+		debugInfo[14] = Integer.toString(keroseneTank.getFluidAmount());
+		debugInfo[15] = Integer.toString(this.mode);
+		return debugInfo;
 	}
 	
 	@Override
 	public void setHasMasterBlock(int x, int y, int z) {
 		super.setHasMasterBlock(x, y, z);
 		
-		addTankReferenceToMaster();
+		if(!worldObj.isRemote) {
+			addReferenceToMaster();
+		}
 	}
 
 	public int getMode() {
-		return mode;
+		return this.mode;
 	}
 
 	public void cycleMode() {
-		if (mode == EnumModes.OIL.value) {
-			mode = 1;
+		if(this.mode == EnumModes.OIL.value) {
+			this.mode = 1;
 		}
-		else if (mode == EnumModes.GASOLINE.value) {
-			mode = 2;
+		else if(this.mode == EnumModes.GASOLINE.value) {
+			this.mode = 2;
 		}
-		else if (mode == EnumModes.DIESEL.value) {
-			mode = 3;
+		else if(this.mode == EnumModes.DIESEL.value) {
+			this.mode = 3;
 		}
-		else if (mode == EnumModes.LIQUIFIED_PETROLEUM_GAS.value) {
-			mode = 4;
+		else if(this.mode == EnumModes.LIQUIFIED_PETROLEUM_GAS.value) {
+			this.mode = 4;
 		}
-		else if (mode == EnumModes.KEROSENE.value) {
-			mode = 0;
+		else if(this.mode == EnumModes.KEROSENE.value) {
+			this.mode = 0;
 		}
 	}
 	
-	public void addTankReferenceToMaster() {
+	public void addReferenceToMaster() {
 		TileEntityFractionationTower masterTile = (TileEntityFractionationTower)worldObj.getTileEntity(masterX, masterY, masterZ);
 		
-		switch(mode) {
-			case 1:
-				masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.GASOLINE.value);
-				break;
-			case 2:
-				masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.DIESEL.value);
-				break;
-			case 3:
-				masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.LIQUIFIED_PETROLEUM_GAS.value);
-				break;
-			case 4:
-				masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.KEROSENE.value);
-				break;
+		switch(this.mode) {
+		case 1:
+			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.GASOLINE.value);
+			System.out.println(this.xCoord + "_" + this.yCoord + "_" + this.zCoord);
+			break;
+		case 2:
+			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.DIESEL.value);
+			break;
+		case 3:
+			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.LIQUIFIED_PETROLEUM_GAS.value);
+			break;
+		case 4:
+			masterTile.addTankLoc(this.xCoord, this.yCoord, this.zCoord, EnumModes.KEROSENE.value);
+			break;
 		}
 	}
 

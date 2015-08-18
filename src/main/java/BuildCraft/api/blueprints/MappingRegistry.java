@@ -23,7 +23,6 @@ import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagShort;
-
 import cpw.mods.fml.common.FMLModContainer;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -289,6 +288,11 @@ public class MappingRegistry {
 		}
 
 		nbt.setTag("entitiesMapping", entitiesMapping);
+
+//		System.out.println("[W] idToItem size : " + idToItem.size());
+//		for (Item i : idToItem) {
+//			System.out.println("- " + (i != null ? i.toString() : "null"));
+//		}
 	}
 
 	private Object getMissingMappingFromFML(boolean isBlock, String name, int i) {
@@ -413,5 +417,10 @@ public class MappingRegistry {
 				BCLog.logger.log(Level.WARN, "Can't load entity " + name);
 			}
 		}
+
+//		System.out.println("[R] idToItem size : " + idToItem.size());
+//		for (Item i : idToItem) {
+//			System.out.println("- " + (i != null ? i.toString() : "null"));
+//		}
 	}
 }

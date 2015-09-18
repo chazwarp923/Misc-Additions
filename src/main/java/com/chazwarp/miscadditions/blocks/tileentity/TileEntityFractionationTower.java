@@ -9,6 +9,7 @@ import com.chazwarp.miscadditions.fluid.Fluids;
 import com.chazwarp.miscadditions.networking.SyncFractionationTowerPacket000;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -91,45 +92,42 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 				powerInputZ = locCompound.getInteger("PowerInputZ");
 	}
 	
-	private void sendUpdatesToServer() {
+	protected void sendUpdatesToServer() {
 		NBTTagCompound compound = new NBTTagCompound();
 		writeToNBT(compound);
-		MiscAdditions.network.sendToServer(new SyncFractionationTowerPacket000(compound, this.xCoord, this.yCoord, this.zCoord));
+		MiscAdditions.network.sendToServer(new SyncFractionationTowerPacket000(compound, xCoord, yCoord, zCoord, 0));
 	}
 	
 	protected void sendUpdatesToServer(int x, int y, int z) {
 		NBTTagCompound compound = new NBTTagCompound();
 		writeToNBT(compound);
-		MiscAdditions.network.sendToServer(new SyncFractionationTowerPacket000(compound, x, y, z));
+		MiscAdditions.network.sendToServer(new SyncFractionationTowerPacket000(compound, x, y, z, 0));
 	}
 	
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
-		writeToNBT(tagCompound);
+		this.writeMultiBlockDataToNBT(tagCompound);
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tagCompound);
 	}
 	
 	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		this.readMultiBlockDataFromNBT(pkt.func_148857_g());
+	}
+	
+	@Override
 	public String[] getDebugStatus() {
-		String[] debugInfo = new String[10];
-		debugInfo[0] = Boolean.toString(this.isMasterBlock);
-		debugInfo[1] = Boolean.toString(this.hasMasterBlock);
-		debugInfo[2] = Integer.toString(this.masterX);
-		debugInfo[3] = Integer.toString(this.masterY);
-		debugInfo[4] = Integer.toString(this.masterZ);
-		debugInfo[5] = this.gasolineTankX + "_" + this.gasolineTankY + "_" + this.gasolineTankZ;
-		debugInfo[6] = this.dieselTankX + "_" + this.dieselTankY + "_" + this.dieselTankZ;
-		debugInfo[7] = this.liquifiedPetroleumGasTankX + "_" + this.liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
-		debugInfo[8] = this.keroseneTankX + "_" + this.keroseneTankY + "_" + this.keroseneTankZ;
-		debugInfo[9] = this.powerInputX + "_" + this.powerInputY + "_" + this.powerInputZ;
+		String[] debugInfo = new String[4];
+		debugInfo[0] = Boolean.toString(this.hasMasterBlock);
+		debugInfo[1] = Integer.toString(this.masterX);
+		debugInfo[2] = Integer.toString(this.masterY);
+		debugInfo[3] = Integer.toString(this.masterZ);
 		return debugInfo;
 	}
 	
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
-		
+	public void updateEntity() {		
 		if(this.isMasterBlock) {
 			if(!worldObj.isRemote) {
 				//Checks to make sure the tanks arent null before going any further
@@ -139,7 +137,7 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 					TileEntityFractionationTowerFluidIO dieselFluidIO = (TileEntityFractionationTowerFluidIO)worldObj.getTileEntity(dieselTankX, dieselTankY, dieselTankZ);
 					TileEntityFractionationTowerFluidIO liquiefiedPetroleumGasFluidIO = (TileEntityFractionationTowerFluidIO)worldObj.getTileEntity(liquifiedPetroleumGasTankX, liquifiedPetroleumGasTankY, liquifiedPetroleumGasTankZ);
 					TileEntityFractionationTowerFluidIO keroseneFluidIO = (TileEntityFractionationTowerFluidIO)worldObj.getTileEntity(keroseneTankX, keroseneTankY, keroseneTankZ);
-					if(gasolineFluidIO.gasolineTank.fill(new FluidStack(Fluids.fluidGasoline, 1), false) >= 1 && dieselFluidIO.dieselTank.fill(new FluidStack(Fluids.fluidDiesel, 1), false) >= 1 && liquiefiedPetroleumGasFluidIO.liquifiedPetroleumGasTank.fill(new FluidStack(Fluids.fluidLiquifiedPetroleumGas, 1), false) >= 1 && keroseneFluidIO.keroseneTank.fill(new FluidStack(Fluids.fluidKerosene, 1), false) >= 1) {
+					if(gasolineFluidIO.gasolineTank.fill(new FluidStack(Fluids.fluidGasoline, 1), false) == 1 && dieselFluidIO.dieselTank.fill(new FluidStack(Fluids.fluidDiesel, 1), false) == 1 && liquiefiedPetroleumGasFluidIO.liquifiedPetroleumGasTank.fill(new FluidStack(Fluids.fluidLiquifiedPetroleumGas, 1), false) == 1 && keroseneFluidIO.keroseneTank.fill(new FluidStack(Fluids.fluidKerosene, 1), false) == 1) {
 						//Checks to make sure there is enough power
 						TileEntityFractionationTowerPowerInput powerInput = (TileEntityFractionationTowerPowerInput)worldObj.getTileEntity(powerInputX, powerInputY, powerInputZ);
 						if(powerInput != null) {
@@ -177,6 +175,8 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 	public void setIsMasterBlock() {
 		this.isMasterBlock = true;
 		this.setupMultiBlock();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.markDirty();
 	}
 	
 	public void setHasMasterBlock(int x, int y, int z) {
@@ -186,41 +186,37 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 		this.masterZ = z;
 	}
 	
-	public boolean isMultiblockValid() {
+	public boolean isMultiblockValid(int mastX, int mastY, int mastZ) {
 		int correctBlocks = 0;
 		
-		for(int x = xCoord-2; x < xCoord+2; x++) {
-			for(int y = yCoord; y < yCoord+5; y++) {
-				for(int z = zCoord-2; z < zCoord+2; z++) {
+		for(int x = mastX-2; x < mastX+2; x++) {
+			for(int y = mastY; y < mastY+6; y++) {
+				for(int z = mastZ-2; z < mastZ+2; z++) {
 					TileEntity tile = worldObj.getTileEntity(x, y, z);
 					if(tile!= null && tile instanceof TileEntityFractionationTower) {
-						if(((TileEntityFractionationTower)tile).isMasterBlock()) {
-							if(((TileEntityFractionationTower)tile).hasMasterBlock()) {
-								correctBlocks++;
-							}
-						}
-						else if(!((TileEntityFractionationTower)tile).hasMasterBlock()) {
+						if(!((TileEntityFractionationTower)tile).hasMasterBlock()) {
 							correctBlocks++;
 						}
 					}
 				}
 			}
-		}		
-		return correctBlocks > 50 && worldObj.isAirBlock(xCoord, yCoord + 1, zCoord) && worldObj.isAirBlock(xCoord, yCoord + 2, zCoord) && worldObj.isAirBlock(xCoord, yCoord + 3, zCoord) && worldObj.isAirBlock(xCoord, yCoord + 4, zCoord);
-	}
-	
-	public boolean hasBlocksAround(int x, int y, int z) {
-		return worldObj.getTileEntity(x+1, y, z) instanceof TileEntityFractionationTower && worldObj.getTileEntity(x-1, y, z) instanceof TileEntityFractionationTower && worldObj.getTileEntity(x, y, z+1) instanceof TileEntityFractionationTower && worldObj.getTileEntity(x, y, z-1) instanceof TileEntityFractionationTower && worldObj.getTileEntity(x+1, y+1, z) instanceof TileEntityFractionationTower;
+		}
+		if(worldObj.isRemote == false) {
+			correctBlocks++;
+		}
+		System.out.println(Boolean.toString(worldObj.isRemote) + " " + Integer.toString(correctBlocks));
+		return correctBlocks == 50 && worldObj.isAirBlock(mastX, mastY + 1, mastZ) && worldObj.isAirBlock(mastX, mastY + 2, mastZ) && worldObj.isAirBlock(mastX, mastY + 3, mastZ) && worldObj.isAirBlock(mastX, mastY + 4, mastZ);
 	}
 
 	private void setupMultiBlock() {
 		for(int x = xCoord-2; x < xCoord+2; x++) {
-			for(int y = yCoord; y < yCoord+5; y++) {
+			for(int y = yCoord; y < yCoord+6; y++) {
 				for(int z = zCoord-2; z < zCoord+2; z++) {
 					TileEntity tile = worldObj.getTileEntity(x, y, z);
 					if(tile != null && (tile instanceof TileEntityFractionationTower)) {
 						((TileEntityFractionationTower)tile).setHasMasterBlock(xCoord, yCoord, zCoord);
-						((TileEntityFractionationTower)tile).sendUpdatesToServer();
+						//((TileEntityFractionationTower)tile).sendUpdatesToServer();
+						worldObj.markBlockForUpdate(x, y, z);
 						((TileEntityFractionationTower)tile).markDirty();
 					}
 				}
@@ -244,7 +240,7 @@ public class TileEntityFractionationTower extends TileEntity implements IDebugga
 	
 	public void resetStructure() {
 		for(int x = xCoord-2; x < xCoord+2; x++) {
-			for(int y = yCoord; y < yCoord+5; y++) {
+			for(int y = yCoord; y < yCoord+6; y++) {
 				for(int z = zCoord-2; z < zCoord+2; z++) {
 					TileEntity tile = worldObj.getTileEntity(x, y, z);
 					if(tile != null && tile instanceof TileEntityFractionationTower) {

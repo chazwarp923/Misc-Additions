@@ -3,18 +3,22 @@
 */
 package com.chazwarp.miscadditions.networking;
 
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
+import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerPowerInput;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class SyncFractionationTowerPacketHandler000 implements IMessageHandler<SyncFractionationTowerPacket000, IMessage> {
 	
 	NBTTagCompound compound;
-	Integer x;
-	Integer y;
-	Integer z;
+	int x;
+	int y;
+	int z;
+	int tileType;
 	
 	@Override
 	public IMessage onMessage(SyncFractionationTowerPacket000 message, MessageContext ctx) {
@@ -22,10 +26,25 @@ public class SyncFractionationTowerPacketHandler000 implements IMessageHandler<S
 		this.x = message.x;
 		this.y = message.y;
 		this.z = message.z;
+		this.tileType = message.tileType;
 		
-		TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(x, y, z);
-		te.readFromNBT(compound);
-		
+		switch(tileType) {
+			case 0:
+				TileEntityFractionationTower te = (TileEntityFractionationTower)ctx.getServerHandler().playerEntity.worldObj.getTileEntity(x, y, z);
+				te.readFromNBT(compound);
+				break;
+			case 1:
+				TileEntityFractionationTowerFluidIO te1 = (TileEntityFractionationTowerFluidIO)ctx.getServerHandler().playerEntity.worldObj.getTileEntity(x, y, z);
+				te1.readFromNBT(compound);
+				break;
+			case 2:
+				TileEntityFractionationTowerPowerInput te2 = (TileEntityFractionationTowerPowerInput)ctx.getServerHandler().playerEntity.worldObj.getTileEntity(x, y, z);
+				te2.readFromNBT(compound);
+				break;
+			default:
+				System.out.println("Something done fucked up");
+				break;
+		}		
 		return null;
 	}
 }

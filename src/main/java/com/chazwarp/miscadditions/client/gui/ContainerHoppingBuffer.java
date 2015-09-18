@@ -26,8 +26,7 @@ public class ContainerHoppingBuffer extends Container {
 		// Adds The Players Main Inventory
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
-				addSlotToContainer(new Slot(invPlayer, x + y * 9 + 9,
-						8 + 18 * x, 59 + y * 18));
+				addSlotToContainer(new Slot(invPlayer, x + y * 9 + 9, 8 + 18 * x, 59 + y * 18));
 			}
 		}
 
@@ -36,7 +35,7 @@ public class ContainerHoppingBuffer extends Container {
 			addSlotToContainer(new Slot(hoppingBuffer, x, 8 + 18 * x, 13));
 		}
 
-		for (int x = 9; x < hoppingBuffer.getSizeInventory(); x++) {
+		for (int x = 9; x < 18; x++) {
 			addSlotToContainer(new Slot(hoppingBuffer, x, 8 + 18 * (x - 9), 31));
 		}
 	}
@@ -47,8 +46,31 @@ public class ContainerHoppingBuffer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-		return null;
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+		ItemStack newStack = null;
+		Slot slot = (Slot)inventorySlots.get(slotIndex);
+		
+		if(slot != null && slot.getHasStack()) {
+			ItemStack stack = slot.getStack();
+			newStack = stack.copy();
+			
+			if(slotIndex < 18) {
+				if(!this.mergeItemStack(stack, 36, inventorySlots.size(), false)) {
+					return null;
+				}
+			}
+			else if(!this.mergeItemStack(stack, 0, 18, false)) {
+				return null;
+			}
+			
+			if(stack.stackSize == 0) {
+				slot.putStack(null);
+			}
+			else {
+				slot.onSlotChanged();
+			}
+		}	
+		return newStack;
 	}
 
 	public TileEntityHoppingBuffer getChest() {

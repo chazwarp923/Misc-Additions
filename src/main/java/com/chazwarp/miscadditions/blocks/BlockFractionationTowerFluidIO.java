@@ -88,11 +88,13 @@ public class BlockFractionationTowerFluidIO extends BlockContainer {
 			return true;
 		}
 		else if(equipped == null) {
-			if(world.getTileEntity(x, y, z) instanceof TileEntityFractionationTower) {
-				TileEntityFractionationTower tile = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
-				if(tile.hasBlocksAround(x, y, z)) {
+			if(world.getTileEntity(x, y, z) instanceof TileEntityFractionationTowerFluidIO) {
+				TileEntityFractionationTowerFluidIO tile = (TileEntityFractionationTowerFluidIO)world.getTileEntity(x, y, z);
+				if(tile.isMultiblockValid(x, y, z)) {
 					tile.setIsMasterBlock();
-					System.out.println("[MiscAdd] Setup Fractionation Tower MultiBlock");
+					if(tile.getWorldObj().isRemote) {
+						System.out.println("Setup Fractionation Tower MultiBlock");
+					}
 				}
 			}
 			return true;

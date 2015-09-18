@@ -11,18 +11,20 @@ import net.minecraft.nbt.NBTTagCompound;
 public class SyncFractionationTowerPacket000 implements IMessage {
 
 	NBTTagCompound compound;
-	Integer x;
-	Integer y;
-	Integer z;
+	int x;
+	int y;
+	int z;
+	int tileType;
 	
 	//Required so FML can use this packet
 	public SyncFractionationTowerPacket000() {}
 	
-	public SyncFractionationTowerPacket000(NBTTagCompound compound, int x, int y, int z) {
+	public SyncFractionationTowerPacket000(NBTTagCompound compound, int x, int y, int z, int tileType) {
 		this.compound = compound;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.tileType = tileType;
 	}
 	
 	@Override
@@ -31,6 +33,7 @@ public class SyncFractionationTowerPacket000 implements IMessage {
 		ByteBufUtils.writeVarInt(buf, x, 5);
 		ByteBufUtils.writeVarInt(buf, y, 5);
 		ByteBufUtils.writeVarInt(buf, z, 5);
+		ByteBufUtils.writeVarInt(buf, tileType, 5);
 	}
 	
 	@Override
@@ -39,5 +42,6 @@ public class SyncFractionationTowerPacket000 implements IMessage {
 		this.x = ByteBufUtils.readVarInt(buf, 5);
 		this.y = ByteBufUtils.readVarInt(buf, 5);
 		this.z = ByteBufUtils.readVarInt(buf, 5);
+		this.tileType = ByteBufUtils.readVarInt(buf, 5);
 	}
 }

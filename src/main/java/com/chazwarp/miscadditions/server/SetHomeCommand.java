@@ -4,6 +4,7 @@
 package com.chazwarp.miscadditions.server;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import net.minecraftforge.common.DimensionManager;
 
 public class SetHomeCommand implements ICommand {
 	private List<String> aliases;
-	public EntityPlayer player;
+	private EntityPlayer player;
 	private String PLAYER;
 	private String HOME_NAME;
 	private double PLAYER_X;
@@ -47,17 +48,16 @@ public class SetHomeCommand implements ICommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender icommandsender,
-			String[] stringArray) {
+	public void processCommand(ICommandSender icommandsender, String[] stringArray) {
 
-		if (stringArray.length == 0) {
+		if(!(stringArray.length > 0)) {
 			correctSyntax = false;
 		}
 
-		if (icommandsender instanceof EntityPlayer) {
-			player = (EntityPlayer) icommandsender;
+		if(icommandsender instanceof EntityPlayer) {
+			player = (EntityPlayer)icommandsender;
 
-			if (correctSyntax == true) {
+			if(correctSyntax == true) {
 				PLAYER = icommandsender.getCommandSenderName();
 				PLAYER_X = player.posX;
 				PLAYER_Y = player.posY;
@@ -69,16 +69,17 @@ public class SetHomeCommand implements ICommand {
 
 				try {
 					save();
-				} catch (Throwable e) {
+				} 
+				catch (Throwable e) {
 					e.printStackTrace();
 				}
-			} else if (correctSyntax == false) {
-				player.addChatMessage(new ChatComponentText(
-						"Incorrect Syntax, You Need A Name For The Home"));
+			} 
+			else if (correctSyntax == false) {
+				player.addChatMessage(new ChatComponentText("Incorrect Syntax, please specify a name"));
 			}
-		} else if (!(icommandsender instanceof EntityPlayer)) {
-			MinecraftServer.getServer().getConfigurationManager()
-					.sendChatMsg(new ChatComponentText("Player Only Command"));
+		} 
+		else if (!(icommandsender instanceof EntityPlayer)) {
+			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("Player Only Command"));
 		}
 	}
 
@@ -88,8 +89,7 @@ public class SetHomeCommand implements ICommand {
 	}
 
 	@Override
-	public List<?> addTabCompletionOptions(ICommandSender icommandsender,
-			String[] astring) {
+	public List<?> addTabCompletionOptions(ICommandSender icommandsender, String[] astring) {
 		return null;
 	}
 
@@ -103,26 +103,21 @@ public class SetHomeCommand implements ICommand {
 		return 0;
 	}
 
-	// From here down is all code originally written by Reika and borrowed from
-	// DragonAPI
-	// https://github.com/ReikaKalseki/DragonAPI
-
-	public final String getSaveFilePath() {
+	public final String getPlayerDir() {
 		File save = DimensionManager.getCurrentSaveRootDirectory();
-		return save.getPath().substring(2) + "\\MiscAdditions\\Homes\\"
-				+ PLAYER + "\\";
+		return save.getPath().substring(2) + "\\MiscAdditions\\Homes\\" + PLAYER + "\\";
 	}
 
-	public final String getFullSavePath() {
-		return this.getSaveFilePath() + HOME_NAME;
+	public final String getFullPathToHome() {
+		return this.getPlayerDir() + HOME_NAME;
 	}
 
-	private final void save() throws Throwable {
-		File dir = new File(this.getSaveFilePath());
+	private final void save() throws IOException {
+		File dir = new File(this.getPlayerDir());
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
-		File file = new File(this.getFullSavePath());
+		File file = new File(this.getFullPathToHome());
 		if (file.exists()) {
 			file.delete();
 		}

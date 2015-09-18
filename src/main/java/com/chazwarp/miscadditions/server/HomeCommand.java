@@ -6,6 +6,7 @@ package com.chazwarp.miscadditions.server;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,9 @@ public class HomeCommand implements ICommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender iCommandSender,
-			String[] stringArray) {
-		if (stringArray.length == 0) {
+	public void processCommand(ICommandSender iCommandSender, String[] stringArray) {
+		
+        if (!(stringArray.length > 0)) {
 			correctSyntax = false;
 		}
 
@@ -62,18 +63,24 @@ public class HomeCommand implements ICommand {
 				MinecraftServer minecraftserver = MinecraftServer.getServer();
 
 				if (minecraftserver != null) {
-					read();
+					try {
+						read();
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					player.setPositionAndUpdate(lines[0], lines[1], lines[2]);
 				}
 
 				player.addChatMessage(new ChatComponentText("Welcome Home"));
-			} else if (correctSyntax == false) {
-				player.addChatMessage(new ChatComponentText(
-						"Incorrect Syntax, Please Specify a Home"));
+			} 
+			else if (correctSyntax == false) {
+				player.addChatMessage(new ChatComponentText("Incorrect Syntax, Please Specify a Home"));
 			}
-		} else if (!(iCommandSender instanceof EntityPlayer)) {
-			MinecraftServer.getServer().getConfigurationManager()
-					.sendChatMsg(new ChatComponentText("Player Only Command"));
+		} 
+		else if (!(iCommandSender instanceof EntityPlayer)) {
+			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("Player Only Command"));
 		}
 	}
 
@@ -82,13 +89,11 @@ public class HomeCommand implements ICommand {
 		return true;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public List addTabCompletionOptions(ICommandSender icommandsender,
-			String[] stringArray) {
+	public List<String> addTabCompletionOptions(ICommandSender icommandsender, String[] stringArray) {
 		PLAYER = icommandsender.getCommandSenderName();
 
-		File[] fileArray = listFilesForFolder(new File(getSaveFilePath()));
+		File[] fileArray = listFilesForFolder(new File(getPlayerDir()));
 		List<String> stringArrayList = new ArrayList<String>();
 
 		for (int i = 0; i < fileArray.length; i++) {
@@ -112,30 +117,20 @@ public class HomeCommand implements ICommand {
 		return folder.listFiles();
 	}
 
-	// From here down is all code originally written by Reika and borrowed from
-	// DragonAPI
-	// https://github.com/ReikaKalseki/DragonAPI
-
-	public final String getSaveFilePath() {
+	public final String getPlayerDir() {
 		File save = DimensionManager.getCurrentSaveRootDirectory();
-		return save.getPath().substring(2) + "\\MiscAdditions\\Homes\\"
-				+ PLAYER + "\\";
+		return save.getPath().substring(2) + "/MiscAdditions/Homes/" + PLAYER + "/";
 	}
 
-	public final String getFullSavePath() {
-		return this.getSaveFilePath() + HOME_NAME;
+	public final String getFullPathToHome() {
+		return this.getPlayerDir() + HOME_NAME;
 	}
 
-	private final void read() {
-		try {
-			BufferedReader p = new BufferedReader(new InputStreamReader(
-					new FileInputStream(this.getFullSavePath())));
-			for (int i = 0; i < 4; i++) {
-				lines[i] = Double.parseDouble(p.readLine());
-			}
-			p.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+	private final void read() throws NumberFormatException, IOException {
+		BufferedReader p = new BufferedReader(new InputStreamReader(new FileInputStream(this.getFullPathToHome())));
+		for (int i = 0; i < 4; i++) {
+			lines[i] = Double.parseDouble(p.readLine());
 		}
+		p.close();
 	}
 }

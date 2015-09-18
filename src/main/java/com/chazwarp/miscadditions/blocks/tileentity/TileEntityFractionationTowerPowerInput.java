@@ -4,12 +4,13 @@
 
 package com.chazwarp.miscadditions.blocks.tileentity;
 
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
 
 public class TileEntityFractionationTowerPowerInput extends TileEntityFractionationTower implements IEnergyHandler {
 
@@ -30,24 +31,25 @@ public class TileEntityFractionationTowerPowerInput extends TileEntityFractionat
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
-		writeToNBT(tagCompound);
+		this.writeMultiBlockDataToNBT(tagCompound);
+		this.storage.writeToNBT(tagCompound);
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tagCompound);
 	}
 	
 	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		this.readMultiBlockDataFromNBT(pkt.func_148857_g());
+		this.storage.readFromNBT(pkt.func_148857_g());
+	}
+	
+	@Override
 	public String[] getDebugStatus() {
-		String[] debugInfo = new String[11];
-		debugInfo[0] = Boolean.toString(this.isMasterBlock);
-		debugInfo[1] = Boolean.toString(this.hasMasterBlock);
-		debugInfo[2] = Integer.toString(this.masterX);
-		debugInfo[3] = Integer.toString(this.masterY);
-		debugInfo[4] = Integer.toString(this.masterZ);
-		debugInfo[5] = gasolineTankX + "_" + gasolineTankY + "_" + gasolineTankZ;
-		debugInfo[6] = dieselTankX + "_" + dieselTankY + "_" + dieselTankZ;
-		debugInfo[7] = liquifiedPetroleumGasTankX + "_" + liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
-		debugInfo[8] = keroseneTankX + "_" + keroseneTankY + "_" + keroseneTankZ;
-		debugInfo[9] = powerInputX + "_" + powerInputY + "_" + powerInputZ;
-		debugInfo[10] = Integer.toString(storage.getEnergyStored());
+		String[] debugInfo = new String[5];
+		debugInfo[0] = Boolean.toString(this.hasMasterBlock);
+		debugInfo[1] = Integer.toString(this.masterX);
+		debugInfo[2] = Integer.toString(this.masterY);
+		debugInfo[3] = Integer.toString(this.masterZ);
+		debugInfo[4] = Integer.toString(storage.getEnergyStored());
 		return debugInfo;
 	}
 	
@@ -55,17 +57,16 @@ public class TileEntityFractionationTowerPowerInput extends TileEntityFractionat
 	public void setHasMasterBlock(int x, int y, int z) {
 		super.setHasMasterBlock(x, y, z);
 		
-		if(!worldObj.isRemote) {
-			addReferenceToMaster();
-		}
+		addReferenceToMaster();
 	}
 	
 	public void addReferenceToMaster() {
 		TileEntityFractionationTower masterTile = (TileEntityFractionationTower)worldObj.getTileEntity(masterX, masterY, masterZ);
-		masterTile.powerInputX = this.xCoord;
-		masterTile.powerInputX = this.yCoord;
-		masterTile.powerInputX = this.zCoord;
+		masterTile.powerInputX = xCoord;
+		masterTile.powerInputY = yCoord;
+		masterTile.powerInputZ = zCoord;
 		masterTile.markDirty();
+		sendUpdatesToServer(masterX, masterY, masterZ);
 	}
 
 	/** IEnergyReceiver */

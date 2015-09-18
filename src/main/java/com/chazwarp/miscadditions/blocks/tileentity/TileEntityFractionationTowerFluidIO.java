@@ -4,7 +4,12 @@
 
 package com.chazwarp.miscadditions.blocks.tileentity;
 
+import com.chazwarp.miscadditions.fluid.FluidTankMA;
+import com.chazwarp.miscadditions.fluid.Fluids;
+
+import cpw.mods.fml.common.Loader;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,11 +19,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.chazwarp.miscadditions.fluid.FluidTankMA;
-import com.chazwarp.miscadditions.fluid.Fluids;
-
-import cpw.mods.fml.common.Loader;
 
 public class TileEntityFractionationTowerFluidIO extends TileEntityFractionationTower implements IFluidHandler {
 
@@ -69,23 +69,30 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
-		writeToNBT(tagCompound);
+		this.writeMultiBlockDataToNBT(tagCompound);
+		tagCompound.setInteger("Mode", this.mode);
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tagCompound);
+	}
+	
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		this.readMultiBlockDataFromNBT(pkt.func_148857_g());
+		this.mode = pkt.func_148857_g().getInteger("Mode");
 	}
 	
 	@Override
 	public String[] getDebugStatus() {
 		String[] debugInfo = new String[16];
-		debugInfo[0] = Boolean.toString(this.isMasterBlock);
-		debugInfo[1] = Boolean.toString(this.hasMasterBlock);
-		debugInfo[2] = Integer.toString(this.masterX);
-		debugInfo[3] = Integer.toString(this.masterY);
-		debugInfo[4] = Integer.toString(this.masterZ);
-		debugInfo[5] = this.gasolineTankX + "_" + this.gasolineTankY + "_" + this.gasolineTankZ;
-		debugInfo[6] = this.dieselTankX + "_" + this.dieselTankY + "_" + this.dieselTankZ;
-		debugInfo[7] = this.liquifiedPetroleumGasTankX + "_" + this.liquifiedPetroleumGasTankY + "_" + this.liquifiedPetroleumGasTankZ;
-		debugInfo[8] = this.keroseneTankX + "_" + this.keroseneTankY + "_" + this.keroseneTankZ;
-		debugInfo[9] = this.powerInputX + "_" + this.powerInputY + "_" + this.powerInputZ;
+		debugInfo[0] = Boolean.toString(isMasterBlock);
+		debugInfo[1] = Boolean.toString(hasMasterBlock);
+		debugInfo[2] = Integer.toString(masterX);
+		debugInfo[3] = Integer.toString(masterY);
+		debugInfo[4] = Integer.toString(masterZ);
+		debugInfo[5] = gasolineTankX + "_" + gasolineTankY + "_" + gasolineTankZ;
+		debugInfo[6] = dieselTankX + "_" + dieselTankY + "_" + dieselTankZ;
+		debugInfo[7] = liquifiedPetroleumGasTankX + "_" + liquifiedPetroleumGasTankY + "_" + liquifiedPetroleumGasTankZ;
+		debugInfo[8] = keroseneTankX + "_" + keroseneTankY + "_" + keroseneTankZ;
+		debugInfo[9] = powerInputX + "_" + powerInputY + "_" + powerInputZ;
 		debugInfo[10] = Integer.toString(oilTank.getFluidAmount());
 		debugInfo[11] = Integer.toString(gasolineTank.getFluidAmount());
 		debugInfo[12] = Integer.toString(dieselTank.getFluidAmount());
@@ -99,9 +106,7 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 	public void setHasMasterBlock(int x, int y, int z) {
 		super.setHasMasterBlock(x, y, z);
 		
-		if(!worldObj.isRemote) {
-			addReferenceToMaster();
-		}
+		addReferenceToMaster();
 	}
 
 	public int getMode() {
@@ -142,32 +147,32 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 			case 0:
 				break;	
 			case 1:
-				masterTile.gasolineTankX = this.xCoord;
-				masterTile.gasolineTankX = this.yCoord;
-				masterTile.gasolineTankX = this.zCoord;
+				masterTile.gasolineTankX = xCoord;
+				masterTile.gasolineTankY = yCoord;
+				masterTile.gasolineTankZ = zCoord;
+				worldObj.markBlockForUpdate(masterX, masterY, masterZ);
 				masterTile.markDirty();
-				sendUpdatesToServer(masterX, masterY, masterZ);
 				break;
 			case 2:
-				masterTile.dieselTankX = this.xCoord;
-				masterTile.dieselTankX = this.yCoord;
-				masterTile.dieselTankX = this.zCoord;
+				masterTile.dieselTankX = xCoord;
+				masterTile.dieselTankY = yCoord;
+				masterTile.dieselTankZ = zCoord;
+				worldObj.markBlockForUpdate(masterX, masterY, masterZ);
 				masterTile.markDirty();
-				sendUpdatesToServer(masterX, masterY, masterZ);
 				break;
 			case 3:
-				masterTile.liquifiedPetroleumGasTankX = this.xCoord;
-				masterTile.liquifiedPetroleumGasTankY = this.yCoord;
-				masterTile.liquifiedPetroleumGasTankZ = this.zCoord;
+				masterTile.liquifiedPetroleumGasTankX = xCoord;
+				masterTile.liquifiedPetroleumGasTankY = yCoord;
+				masterTile.liquifiedPetroleumGasTankZ = zCoord;
+				worldObj.markBlockForUpdate(masterX, masterY, masterZ);
 				masterTile.markDirty();
-				sendUpdatesToServer(masterX, masterY, masterZ);
 				break;
 			case 4:
-				masterTile.keroseneTankX = this.xCoord;
-				masterTile.keroseneTankY = this.yCoord;
-				masterTile.keroseneTankZ = this.zCoord;
+				masterTile.keroseneTankX = xCoord;
+				masterTile.keroseneTankY = yCoord;
+				masterTile.keroseneTankZ = zCoord;
+				worldObj.markBlockForUpdate(masterX, masterY, masterZ);
 				masterTile.markDirty();
-				sendUpdatesToServer(masterX, masterY, masterZ);
 				break;
 			default:
 				System.out.println("Something done fucked up");
@@ -179,6 +184,7 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		if (oil != null && resource.isFluidEqual(oil) && mode == 0) {
+			this.markDirty();
 			return oilTank.fill(resource, doFill);
 		}
 		else {
@@ -215,7 +221,7 @@ public class TileEntityFractionationTowerFluidIO extends TileEntityFractionation
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if (oil != null && fluid == oil.getFluid()) {
+		if (oil != null && fluid == oil.getFluid() && mode == 0) {
 			return true;
 		}
 		else {

@@ -3,10 +3,6 @@
  */
 package com.chazwarp.miscadditions.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fluids.BlockFluidClassic;
-
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTower;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerFluidIO;
 import com.chazwarp.miscadditions.blocks.tileentity.TileEntityFractionationTowerPowerInput;
@@ -30,16 +26,18 @@ import com.chazwarp.miscadditions.items.itemblocks.ItemBlockPresent;
 import com.chazwarp.miscadditions.lib.BlockInfo;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 
 public class ModBlocks {
 
 	public static Block decorative = new BlockMA(Material.wood, 2F, Block.soundTypeWood, BlockInfo.BLOCK_DECORATIVE_UNLOCALIZED_NAME, BlockMA.AXE, BlockMA.STONE);
 	public static Block maglevPower = new BlockMaglevPower();
 	public static Block mobTele = new BlockMobTeleporter();
-	public static BlockFluidClassic fluidGasoline = new BlockFluidMA(Fluids.fluidGasoline, Material.water, BlockInfo.FLUID_GASOLINE_UNLOCALIZED_NAME, BlockInfo.FLUID_GASOLINE_KEY, true);
-	public static BlockFluidClassic fluidDiesel = new BlockFluidMA(Fluids.fluidDiesel, Material.water, BlockInfo.FLUID_DIESEL_UNLOCALIZED_NAME, BlockInfo.FLUID_DIESEL_KEY, true);
-	public static BlockFluidClassic fluidLiquifiedPetroleumGas = new BlockFluidMA(Fluids.fluidLiquifiedPetroleumGas, Material.water, BlockInfo.FLUID_LIQUIFIED_PETROLEUM_GAS_UNLOCALIZED_NAME, BlockInfo.FLUID_LIQUIFIED_PETROLEUM_GAS_KEY, true);
-	public static BlockFluidClassic fluidKerosene = new BlockFluidMA(Fluids.fluidKerosene, Material.water, BlockInfo.FLUID_KEROSENE_UNLOCALIZED_NAME, BlockInfo.FLUID_KEROSENE_KEY, true);
+	public static BlockFluidMA fluidGasoline = new BlockFluidMA(Fluids.fluidGasoline, Material.water, BlockInfo.FLUID_GASOLINE_UNLOCALIZED_NAME, BlockInfo.FLUID_GASOLINE_KEY, true);
+	public static BlockFluidMA fluidDiesel = new BlockFluidMA(Fluids.fluidDiesel, Material.water, BlockInfo.FLUID_DIESEL_UNLOCALIZED_NAME, BlockInfo.FLUID_DIESEL_KEY, true);
+	public static BlockFluidMA fluidLiquifiedPetroleumGas = new BlockFluidMA(Fluids.fluidLiquifiedPetroleumGas, Material.water, BlockInfo.FLUID_LIQUIFIED_PETROLEUM_GAS_UNLOCALIZED_NAME, BlockInfo.FLUID_LIQUIFIED_PETROLEUM_GAS_KEY, true);
+	public static BlockFluidMA fluidKerosene = new BlockFluidMA(Fluids.fluidKerosene, Material.water, BlockInfo.FLUID_KEROSENE_UNLOCALIZED_NAME, BlockInfo.FLUID_KEROSENE_KEY, true);
 	public static Block fractionationTower = new BlockFractionationTower();
 	public static Block fractionationTowerFluidIO = new BlockFractionationTowerFluidIO();
 	public static Block fractionationTowerPowerInput = new BlockFractionationTowerPowerInput();
@@ -51,9 +49,13 @@ public class ModBlocks {
 		GameRegistry.registerBlock(maglevPower, ItemBlockMaglevPower.class, BlockInfo.BLOCK_MAGLEV_POWER_INPUT_KEY);
 		GameRegistry.registerBlock(mobTele, ItemBlockMobTeleporter.class, BlockInfo.BLOCK_MOB_TELEPORTER_KEY);
 		GameRegistry.registerBlock(fluidGasoline, ItemBlockFluidGasoline.class, BlockInfo.FLUID_GASOLINE_KEY);
+		Fluids.fluidGasoline.setBlock(fluidGasoline);
 		GameRegistry.registerBlock(fluidDiesel, ItemBlockFluidDiesel.class, BlockInfo.FLUID_DIESEL_KEY);
+		Fluids.fluidDiesel.setBlock(fluidDiesel);
 		GameRegistry.registerBlock(fluidLiquifiedPetroleumGas, ItemBlockFluidLiquifiedPetroleumGas.class, BlockInfo.FLUID_LIQUIFIED_PETROLEUM_GAS_KEY);
+		Fluids.fluidLiquifiedPetroleumGas.setBlock(fluidLiquifiedPetroleumGas);
 		GameRegistry.registerBlock(fluidKerosene, ItemBlockFluidKerosene.class, BlockInfo.FLUID_KEROSENE_KEY);
+		Fluids.fluidKerosene.setBlock(fluidKerosene);
 		GameRegistry.registerBlock(fractionationTower, ItemBlockFractionationTower.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_KEY);
 		GameRegistry.registerBlock(fractionationTowerFluidIO, ItemBlockFractionationTowerFluidIO.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_FLUID_IO_KEY);
 		GameRegistry.registerBlock(fractionationTowerPowerInput, ItemBlockFractionationTowerPowerInput.class, BlockInfo.BLOCK_FRACTIONATION_TOWER_POWER_INPUT_KEY);

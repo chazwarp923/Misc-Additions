@@ -38,19 +38,7 @@ public class BlockFractionationTower extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int side, float par7, float par8, float par9) {
 		ItemStack equipped = ep.getCurrentEquippedItem();
 
-		if(equipped == null) {
-			if(world.getTileEntity(x, y, z) instanceof TileEntityFractionationTower) {
-				TileEntityFractionationTower tile = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
-				if(tile.hasBlocksAround(x, y, z)) {
-					tile.setIsMasterBlock();
-					if(!tile.getWorldObj().isRemote) {
-						System.out.println("Setup Fractionation Tower MultiBlock");
-					}
-				}
-			}
-			return true;
-		}
-		else if(equipped.getItem().equals(ModItems.debugItem)) {
+		if(equipped.getItem().equals(ModItems.debugItem)) {
 			TileEntityFractionationTower te = (TileEntityFractionationTower)world.getTileEntity(x, y, z);
 			String[] debugStats = te.getDebugStatus();
 			for(int i=0; i < debugStats.length; i++) {

@@ -4,6 +4,8 @@
 package com.chazwarp.miscadditions;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import com.chazwarp.miscadditions.blocks.ModBlocks;
 import com.chazwarp.miscadditions.crafting.Shaped;
@@ -18,6 +20,7 @@ import com.chazwarp.miscadditions.server.SetHomeCommand;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -25,6 +28,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.world.biome.BiomeGenBase;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies = "required-after:CoFHCore")
 public class MiscAdditions {
@@ -42,8 +46,33 @@ public class MiscAdditions {
 	public static SimpleNetworkWrapper network;
 
 	@EventHandler
+	public void construction(FMLConstructionEvent constructionEvent) {
+		//Does Biome Related Things
+		/*Class<BiomeGenBase> biomeGenBase = BiomeGenBase.class;
+		Field biomeList = null;
+		try {
+			biomeList = biomeGenBase.getField("biomeList");
+			biomeList.setAccessible(true);
+			
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+		    modifiersField.setAccessible(true);
+		    modifiersField.setInt(biomeList, biomeList.getModifiers() & ~Modifier.FINAL);
+			
+			biomeList.set(biomeGenBase, new BiomeGenBase[512]);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}*/
+	}
+	
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent preInitEvent) {
-
+		
 		//Does packet related things
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("MiscAdditions");
 		

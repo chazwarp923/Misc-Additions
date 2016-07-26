@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "miscadditions:hangingLadder" },
+        "facing=east":  { "model": "miscadditions:hangingLadder", "y": 90 },
+        "facing=south": { "model": "miscadditions:hangingLadder", "y": 180 },
+        "facing=west":  { "model": "miscadditions:hangingLadder", "y": 270 }
+	}
+}

@@ -1,52 +1,63 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+apply plugin: 'java'
+  compileJava {
+  sourceCompatibility = '1.8'
+  targetCompatibility = '1.8'
+}
+
+eclipse {
+    classpath {
+         containers.clear()
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
     }
 }
 
-apply plugin: 'forge'
-
-version = "1.7.10-0.2"
+version = "1.10.2-0.2"
 group= "com.chazwarp.miscadditions" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "miscadditions"
 
 minecraft {
-    version = "1.7.10-10.13.4.1492-1.7.10"
-    runDir = "../run"
+    version = "1.10.2-12.18.1.2026"
+    if(file('../run').exists()) {
+        runDir = "../run"
+    }
+    else {
+        runDir = "run"
+    }
     
-   // srgExtra "com/cricketcraft/ctmlib com/chazwarp/ctmlib"
-}
-
-configurations {
-    shade
-    compile.extendsFrom shade
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not allways work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = "snapshot_20160720"
 }
 
 repositories {
-    maven { url = "http://mobiusstrip.eu/maven" }
-    maven { url = "http://chickenbones.net/maven/" }
-    maven { url = "http://coloredlightscore.us.to/maven/chisel-2/" }
+  maven {
+    //JEI maven
+    url "http://dvs1.progwml6.com/files/maven"
+  }
 }
 
 dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    //compile "appeng:appliedenergistics2:rv2-beta-32:dev"
-    shade "com.cricketcraft.ctmlib:CTMLib:1.0.1.5"
+    // compile against the JEI API
+    deobfCompile "mezz.jei:jei_1.10.2:3.7.8.234:api"
+    // at runtime, use the full JEI jar
+    runtime "mezz.jei:jei_1.10.2:3.7.8.234"
 
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
@@ -72,12 +83,4 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-}
-
-jar {
-    //configurations.shade.each { dep ->
-    //    from(project.zipTree(dep)){
-    //        exclude 'META-INF', 'META-INF/**'
-    //    }
-    //}
 }
